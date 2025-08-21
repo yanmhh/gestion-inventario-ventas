@@ -21,23 +21,23 @@ El desarrollo sigue los principios de **Arquitectura Hexagonal (Ports & Adapters
 
 El proyecto sigue una estructura basada en **DDD + Hexagonal**:
 
-src/main/java/com/empresa/repuestos/
-├─ application/ # Casos de uso y lógica de aplicación
-│ ├─ dto/ # Objetos de transferencia de datos
-│ ├─ service/ # Servicios de aplicación
-│ └─ mapper/ # Conversión entre entidades y DTOs
-│
-├─ domain/ # Lógica de negocio (núcleo del sistema)
-│ ├─ model/ # Entidades y Value Objects
-│ ├─ exception/ # Excepciones de domain
-│ └─ repository/ # Interfaces de repositorios (puertos)
-│
-├─ infrastructure/ # Implementaciones técnicas
-│ ├─ config/ # Configuración (Spring, seguridad, JWT)
-│ ├─ controller/ # Controladores REST (entradas al sistema)
-│ ├─ exception/ # Excepciones de domain
-│ ├─ repository/ # Implementación de repositorios
-│ │ ├─ Jpa/ # Adaptadores de persistencia (JPA)
-│ └─ security/ # JWT, filtros, autenticación/autorización
-│
-└─ shared/ # Excepciones y utilidades compartidas
+src/main/java/com/empresa/repuestos/<br>
+├─ application/ # Casos de uso y lógica de aplicación<br>
+│ ├─ dto/ # Objetos de transferencia de datos<br>
+│ ├─ service/ # Servicios de aplicación<br>
+│ └─ mapper/ # Conversión entre entidades y DTOs<br>
+│<br>
+├─ domain/ # Lógica de negocio (núcleo del sistema)<br>
+│ ├─ model/ # Entidades y Value Objects<br>
+│ ├─ exception/ # Excepciones de domain<br>
+│ └─ repository/ # Interfaces de repositorios (puertos)<br>
+│<br>
+├─ infrastructure/ # Implementaciones técnicas<br>
+│ ├─ config/ # Configuración (Spring, seguridad, JWT)<br>
+│ ├─ controller/ # Controladores REST (entradas al sistema)<br>
+│ ├─ exception/ # Excepciones de domain<br>
+│ ├─ repository/ # Implementación de repositorios<br>
+│ │ ├─ Jpa/ # Adaptadores de persistencia (JPA)<br>
+│ └─ security/ # JWT, filtros, autenticación/autorización<br>
+│<br>
+└─ shared/ # Excepciones y utilidades compartidas<br>
