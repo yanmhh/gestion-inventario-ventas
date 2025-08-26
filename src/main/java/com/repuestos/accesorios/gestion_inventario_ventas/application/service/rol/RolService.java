@@ -1,7 +1,7 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.application.service;
+package com.repuestos.accesorios.gestion_inventario_ventas.application.service.rol;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Rol;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.RolRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.rol.RolRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

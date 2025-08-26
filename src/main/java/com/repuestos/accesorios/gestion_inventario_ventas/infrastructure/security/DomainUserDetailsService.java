@@ -1,6 +1,6 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.security;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.UsuarioRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,6 +1,4 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.domain.model;
-
-import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa.JpaRolEntity;
+package com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol;
 
 public class Rol {
     private final Integer id;

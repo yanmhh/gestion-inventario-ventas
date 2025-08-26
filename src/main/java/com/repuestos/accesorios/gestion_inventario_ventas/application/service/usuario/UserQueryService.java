@@ -1,8 +1,8 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.application.service;
+package com.repuestos.accesorios.gestion_inventario_ventas.application.service.usuario;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.UsuarioNotFoundException;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Usuario;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.UsuarioRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 @Service

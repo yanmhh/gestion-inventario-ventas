@@ -1,4 +1,4 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa;
+package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa.rol;
 
 import jakarta.persistence.*;
 

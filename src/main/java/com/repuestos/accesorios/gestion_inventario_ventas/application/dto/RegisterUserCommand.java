@@ -1,9 +1,13 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class RegisterUserCommand {
 
+    @NotBlank
     private String nombre;
 
     @JsonProperty("apellido_paterno")
@@ -12,7 +16,11 @@ public class RegisterUserCommand {
     @JsonProperty("apellido_materno")
     private String apellidoMaterno;
 
+    @NotBlank
+    @Email
     private String email;
+
+    @Size(min =8)
     private String password;
     private String telefono;
 

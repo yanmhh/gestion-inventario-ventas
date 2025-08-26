@@ -1,7 +1,7 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.controller;
+package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.controller.usuario;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.application.service.UserQueryService;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Usuario;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.service.usuario.UserQueryService;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

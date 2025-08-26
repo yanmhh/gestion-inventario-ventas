@@ -1,9 +1,5 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.exception;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.application.service.AuthService;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.UsuarioRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.time.LocalDateTime;
 
 public class ApiError {

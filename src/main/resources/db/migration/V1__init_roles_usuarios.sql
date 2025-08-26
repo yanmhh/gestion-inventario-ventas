@@ -21,7 +21,7 @@ CREATE TABLE usuario (
 );
 
 -- Datos iniciales
-INSERT INTO rol (nombre) VALUES ('ADMIN'), ('VENDEDOR'), ('INVENTARIO');
+INSERT INTO rol (nombre) VALUES ('ADMIN'), ('VENDEDOR');
 
 INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, email, password, telefono, estado, rol_id)
 VALUES

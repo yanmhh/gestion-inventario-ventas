@@ -1,15 +1,15 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.application.service;
+package com.repuestos.accesorios.gestion_inventario_ventas.application.service.usuario;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.LoginRequest;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.LoginResponse;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.RegisterUserCommand;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.UsuarioMapper;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.usauario.UsuarioMapper;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.BusinessException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.UsuarioNotFoundException;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Rol;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Usuario;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.RolRepository;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.UsuarioRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.rol.RolRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioRepository;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.security.JwtProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

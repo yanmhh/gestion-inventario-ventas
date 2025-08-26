@@ -1,9 +1,9 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.controller;
+package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.controller.usuario;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.LoginRequest;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.LoginResponse;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.RegisterUserCommand;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.service.AuthService;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.service.usuario.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

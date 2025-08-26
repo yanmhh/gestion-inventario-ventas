@@ -1,8 +1,8 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.application.mapper;
+package com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.usauario;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.RegisterUserCommand;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Rol;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Usuario;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
 
 import java.time.LocalDateTime;
 

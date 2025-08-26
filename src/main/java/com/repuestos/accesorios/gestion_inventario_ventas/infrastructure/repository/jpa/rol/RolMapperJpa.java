@@ -1,6 +1,6 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa;
+package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa.rol;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Rol;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
 import org.springframework.stereotype.Component;
 
 @Component

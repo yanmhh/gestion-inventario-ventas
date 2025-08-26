@@ -1,4 +1,6 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.domain.model;
+package com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
+
 import java.time.LocalDateTime;
 public class Usuario {
 

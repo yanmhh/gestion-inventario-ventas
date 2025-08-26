@@ -1,5 +1,6 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa;
+package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa.usuario;
 
+import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.repository.jpa.rol.JpaRolEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -13,13 +14,18 @@ public class JpaUsuarioEntity {
     private Integer id;
 
     private String nombre;
+
     @Column(name = "apellido_paterno")
     private String apellidoPaterno;
+
     @Column(name = "apellido_materno")
     private String apellidoMaterno;
+
     private String email;
+
     @Column(name = "password")
     private String password;
+
     private String telefono;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -106,6 +112,7 @@ public class JpaUsuarioEntity {
     public void setRol(JpaRolEntity rol){
         this.rol = rol;
     }
+
     public void setCreadoEn(LocalDateTime creadoEn) {
         this.creadoEn = creadoEn;
     }

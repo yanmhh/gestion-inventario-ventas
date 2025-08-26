@@ -1,6 +1,6 @@
-package com.repuestos.accesorios.gestion_inventario_ventas.domain.repository;
+package com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.Usuario;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
 
 import java.util.List;
 import java.util.Optional;
