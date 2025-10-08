@@ -2,8 +2,10 @@ package com.repuestos.accesorios.gestion_inventario_ventas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
+@EnableConfigurationProperties
 public class GestionInventarioVentasApplication {
 
     public static void main(String[] args) {
@@ -11,3 +13,4 @@ public class GestionInventarioVentasApplication {
         SpringApplication.run(GestionInventarioVentasApplication.class, args);
     }
 }
+

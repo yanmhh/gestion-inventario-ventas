@@ -1,12 +1,13 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.controller.usuario;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.LoginRequest;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.LoginResponse;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.RegisterUserCommand;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.login.LoginRequest;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.login.LoginResponse;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.usuario.RegistroUsuarioDto;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.usuario.UsuarioView;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.service.usuario.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,17 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterUserCommand cmd) {
+    public ResponseEntity<UsuarioView> register(@RequestBody @Valid RegistroUsuarioDto cmd) {
         authService.register(cmd);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        // Este authenticate invoca a DomainUserDetailsService y BCrypt internamente
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 

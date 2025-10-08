@@ -2,6 +2,7 @@ package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.reposi
 
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.rol.RolRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.mapper.rol.RolMapperJpa;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +22,12 @@ public class JpaRolRepositoryAdapter implements RolRepository {
     @Override
     public Optional<Rol> findById(Integer id) {
         return springDataRolRepository.findById(id).map(rolMapperJpa::toDomain);
+    }
+
+    @Override
+    public Optional<Rol> findByNombre(String nombre) {
+        return springDataRolRepository.findByNombre(nombre)
+                .map(rolMapperJpa::toDomain);
     }
 
     @Override

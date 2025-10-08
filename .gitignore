@@ -31,8 +31,7 @@ out/
 .vscode/
 
 # Archivos de configuración sensibles
-/src/main/resources/application.properties
-
+.env
 # Logs y temporales
 *.log
 *.tmp

@@ -16,7 +16,6 @@ public class UsuarioController {
         this.userQueryService = userQueryService;
     }
 
-    // Ejemplo de endpoint protegido: obtiene el usuario autenticado
     @GetMapping("/autenticado")
     public Usuario me(Authentication auth) {
         Integer userId = (Integer) auth.getPrincipal();

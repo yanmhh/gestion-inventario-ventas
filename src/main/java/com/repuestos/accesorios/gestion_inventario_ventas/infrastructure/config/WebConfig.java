@@ -13,13 +13,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // todas las rutas
+        registry.addMapping("/**")
                 .allowedOrigins(allowedOrigins)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Content-Disposition") // útil si descargas archivos o lees el header Authorization
                 .allowCredentials(true)
-                .maxAge(3600); // cache del preflight (OPTIONS)
+                .maxAge(3600);
     }
 }
 

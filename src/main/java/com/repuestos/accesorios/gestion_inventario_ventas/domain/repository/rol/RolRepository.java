@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface RolRepository {
     Optional<Rol> findById(Integer id);
+    Optional<Rol> findByNombre(String nombre);
     List<Rol> findAll();
     Rol save(Rol rol);
     void deleteById(Integer id);

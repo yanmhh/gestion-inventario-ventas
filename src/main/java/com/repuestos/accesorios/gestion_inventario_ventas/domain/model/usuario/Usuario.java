@@ -1,74 +1,147 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.UsuarioInvalidoException;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.persona.Persona;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 public class Usuario {
 
     private final Integer id;
-    private String nombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
-    private String email;
-    private String password;
-    private String telefono;
+    private Persona persona;
+    private String contrasenia;
     private Rol rol;
-    private LocalDateTime creadoEn;
+    private EstadoUsuario  estado;
+    private final LocalDateTime creadoEn;
     private LocalDateTime actualizadoEn;
 
-    public Usuario(Integer id, String nombre, String apellidoPaterno,
-                   String apellidoMaterno, String email, String password,
-                   String telefono, Rol rol, LocalDateTime creadoEn,
-                   LocalDateTime actualizadoEn){
-        this.id=id;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.email = email;
-        this.password = password;
-        this.telefono = telefono;
+    public Usuario(Integer id, Persona persona, String contrasenia, Rol rol, EstadoUsuario  estado, LocalDateTime creadoEn) {
+
+        validarCampos(persona, contrasenia, rol, estado);
+
+        this.id = id;
+        this.persona = persona;
+        this.contrasenia = contrasenia;
         this.rol = rol;
-        this.creadoEn = creadoEn;
-        this.actualizadoEn = actualizadoEn;
+        this.estado = estado;
+        this.creadoEn = creadoEn != null ? creadoEn : LocalDateTime.now();
     }
 
-    public Integer getId(){
-        return this.id;
+    public Integer getId() {
+        return id;
     }
 
-    public String getNombre(){
-        return this.nombre;
+    public Persona getPersona() {
+        return persona;
     }
 
-    public String getApellidoPaterno(){
-        return this.apellidoPaterno;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public String getApellidoMaterno(){
-        return this.apellidoMaterno;
+    public Rol getRol() {
+        return rol;
     }
 
-    public String getEmail(){
-        return this.email;
+    public EstadoUsuario  getEstado() {
+        return estado;
     }
 
-    public String getPassword(){
-        return this.password;
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
     }
 
-    public String getTelefono(){
-        return this.telefono;
+    public LocalDateTime getActualizadoEn() {
+        return actualizadoEn;
     }
 
-    public Rol getRol(){
-        return this.rol;
+    public void actualizarUsuario(Persona persona, String contrasenia, EstadoUsuario  estado, LocalDateTime actualizadoEn) {
+        validarPersona(persona);
+        validarContrasenia(contrasenia);
+        validarEstado(estado);
+
+        this.persona = persona;
+        this.contrasenia = contrasenia;
+        this.estado = estado;
+        this.actualizadoEn = LocalDateTime.now();
     }
 
-    public LocalDateTime getCreadoEn(){
-        return this.creadoEn;
+    public boolean estaActivo() {
+        return this.estado == EstadoUsuario.ACTIVO;
     }
 
-    public LocalDateTime getActualizadoEn(){
-        return this.actualizadoEn;
+    public void asegurarActivo() {
+        if (this.estado != EstadoUsuario.ACTIVO) {
+            throw new UsuarioInvalidoException("El usuario está inactivo. Contacte al administrador.");
+        }
     }
 
+    private void validarPersona(Persona persona) {
+        validarNoNulo(persona, "La persona no puede ser nula.");
+    }
+
+    private void validarContrasenia(String contrasenia) {
+        validarNoVacio(contrasenia, "La contraseña no puede estar vacía.");
+        if (contrasenia.length() < 8) {
+            throw new UsuarioInvalidoException("La contraseña debe tener al menos 8 caracteres.");
+        }
+
+        if (!contrasenia.matches(".*[A-Za-z].*") || !contrasenia.matches(".*\\d.*")) {
+            throw new UsuarioInvalidoException("La contraseña debe contener al menos una letra y un número.");
+        }
+    }
+
+    private void validarRol(Rol rol) {
+        validarNoNulo(rol, "El rol no puede ser nulo.");
+    }
+
+    private void validarEstado(EstadoUsuario estado) {
+        validarNoNulo(estado, "El estado del usuario no puede ser nulo.");
+    }
+
+    private void validarCampos(Persona persona, String contrasenia, Rol rol, EstadoUsuario estado){
+        validarPersona(persona);
+        validarContrasenia(contrasenia);
+        validarRol(rol);
+        validarEstado(estado);
+
+    }
+
+    private void validarNoVacio(String valor, String mensaje) {
+        if (valor == null || valor.isBlank()) {
+            throw new UsuarioInvalidoException(mensaje);
+        }
+    }
+
+    private void validarNoNulo(Object valor, String mensaje) {
+        if (valor == null) {
+            throw new UsuarioInvalidoException(mensaje);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Usuario)) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", persona=" + persona +
+                ", rol=" + rol +
+                ", estado=" + estado +
+                ", creadoEn=" + creadoEn +
+                ", actualizadoEn=" + actualizadoEn +
+                '}';
+    }
 }

@@ -1,20 +1,20 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.service.usuario;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.UsuarioNotFoundException;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.UsuarioNoEncontradoException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioReadRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserQueryService {
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioReadRepository usuarioReadRepository;
 
-    public UserQueryService(UsuarioRepository usuarioRepository){
-        this.usuarioRepository = usuarioRepository;
+    public UserQueryService(UsuarioReadRepository usuarioReadRepository){
+        this.usuarioReadRepository = usuarioReadRepository;
     }
 
     public Usuario getById(Integer id){
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new UsuarioNotFoundException("Usuario no encontrado"));
+        return usuarioReadRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
     }
 }
