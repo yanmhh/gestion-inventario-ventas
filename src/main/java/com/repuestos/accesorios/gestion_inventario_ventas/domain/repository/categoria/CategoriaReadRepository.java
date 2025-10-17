@@ -1,10 +1,10 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.categoria;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.categoria.Categoria;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface CategoriaReadRepository extends  CategoriaFinder{
 
-    Page<Categoria> findAll(Pageable pageable);
+    List<Categoria> findAll();
 }

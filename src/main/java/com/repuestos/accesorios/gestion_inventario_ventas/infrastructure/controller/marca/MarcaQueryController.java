@@ -1,6 +1,7 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.controller.marca;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaDto;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaView;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.service.marca.MarcaQueryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/marcas")
+@RequestMapping("/api/marcas/query")
 public class MarcaQueryController {
 
     private final MarcaQueryService marcaQueryService;
@@ -21,14 +24,14 @@ public class MarcaQueryController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<MarcaDto>> listarTodasLasMarcas(Pageable pageable){
-        Page<MarcaDto> marcas = marcaQueryService.listarTodasLasMarcas(pageable);
+    public ResponseEntity<List<MarcaView>> listarTodasLasMarcas(){
+        List<MarcaView> marcas = marcaQueryService.listarTodasLasMarcas();
         return ResponseEntity.ok(marcas);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MarcaDto> obtenerMarcaPorId(@PathVariable Integer id){
-        MarcaDto marca = marcaQueryService.obtenerMarcaPorId(id);
+    public ResponseEntity<MarcaView> obtenerMarcaPorId(@PathVariable Integer id){
+        MarcaView marca = marcaQueryService.obtenerMarcaPorId(id);
         return ResponseEntity.ok(marca);
     }
 }

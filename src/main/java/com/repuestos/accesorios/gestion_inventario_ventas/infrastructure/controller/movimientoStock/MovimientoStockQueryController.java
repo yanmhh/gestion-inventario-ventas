@@ -2,9 +2,7 @@ package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.contro
 
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.movimiento.MovimientoStockView;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.service.movimientoStock.MovimientoStockQueryService;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.MovimientoStockNoEncontradoException;
 import jakarta.validation.constraints.Positive;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/movimientos-stock")
+@RequestMapping("/api/movimientos-stock/query")
 public class MovimientoStockQueryController {
 
     private final MovimientoStockQueryService movimientoStockQueryService;

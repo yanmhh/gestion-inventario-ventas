@@ -1,18 +1,19 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.producto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.categoria.CategoriaDto;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaDto;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.shared.Sanitize;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
 public class RegisterProductoCommand {
 
-    @Size(max = 100)
+    @Sanitize
     @NotBlank
+    @Size(max = 100)
     private String nombre;
 
+    @Sanitize
     @NotBlank
     @Size(max = 250)
     private String descripcion;
@@ -27,26 +28,27 @@ public class RegisterProductoCommand {
     @JsonProperty("costo_compra")
     private BigDecimal costoCompra;
 
-    @Min(0)
     private int stock;
 
     @JsonProperty("stock_minimo")
     private int stockMinimo;
 
+    @Sanitize
     @NotBlank
     @Size(max = 30)
     private String codigo;
 
+    @Sanitize
     @JsonProperty("imagen_url")
     private String imagenUrl;
 
     @NotNull
-    @JsonProperty("marca")
-    private MarcaDto marca;
+    @JsonProperty("marca_id")
+    private Integer marcaId;
 
     @NotNull
-    @JsonProperty("categoria")
-    private CategoriaDto categoria;
+    @JsonProperty("categoria_id")
+    private Integer categoriaId;
 
     public RegisterProductoCommand(){
     }
@@ -83,11 +85,11 @@ public class RegisterProductoCommand {
         return this.imagenUrl;
     }
 
-    public MarcaDto getMarca(){
-        return this.marca;
+    public Integer getMarcaId(){
+        return this.marcaId;
     }
 
-    public CategoriaDto getCategoria(){
-        return  this.categoria;
+    public Integer getCategoriaId(){
+        return  this.categoriaId;
     }
 }

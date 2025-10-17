@@ -20,18 +20,18 @@ public class ProductoQueryService {
 
     public Page<ProductoView> listarTodosLosProductos(Pageable pageable){
         return productoReadRepository.findAll(pageable)
-                .map(ProductoViewMapper::from);
+                .map(ProductoViewMapper::toView);
     }
 
     public ProductoView obtenerProductoPorId(Integer id) {
         Producto producto = productoReadRepository.findById(id)
                 .orElseThrow(() -> new ProductoNoEncontradoException("Producto con ID " + id + " no encontrado"));
 
-        return ProductoViewMapper.from(producto);
+        return ProductoViewMapper.toView(producto);
     }
 
     public Page<ProductoView> buscarPorFiltro(ProductoFilter filtro, Pageable pageable) {
         return productoReadRepository.findAllConFiltro(filtro, pageable)
-                .map(ProductoViewMapper::from);
+                .map(ProductoViewMapper::toView);
     }
 }

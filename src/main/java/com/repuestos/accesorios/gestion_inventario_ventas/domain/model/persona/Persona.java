@@ -34,68 +34,18 @@ public class Persona {
         this.correo = correo;
         this.telefono = telefono;
         this.creadoEn = creadoEn;
+    }
+
+    public void actualizarPersona(String nombre, String apellidoPaterno, String apellidoMaterno, String correo,
+                                 String telefono, LocalDateTime actualizadoEn){
+        validarCampos(nombre, apellidoPaterno,apellidoMaterno, correo, telefono);
+        this.nombre = nombre.trim();
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.correo = correo;
+        this.telefono = telefono;
         this.actualizadoEn = actualizadoEn;
-    }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellidoPaterno() {
-        return apellidoPaterno;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public String getApellidoMaterno() {
-        return apellidoMaterno;
-    }
-
-    public LocalDateTime getCreadoEn() {
-        return creadoEn;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public LocalDateTime getActualizadoEn() {
-        return actualizadoEn;
-    }
-
-    public void actualizarNombre(String nuevoNombre) {
-        validarNombre(nuevoNombre);
-        this.nombre = nuevoNombre;
-        this.actualizadoEn = LocalDateTime.now();
-    }
-
-    public void actualizarApellidos(String nuevoPaterno, String nuevoMaterno) {
-        validarApellidos(nuevoPaterno, nuevoMaterno);
-        this.apellidoPaterno = nuevoPaterno;
-        this.apellidoMaterno = nuevoMaterno;
-        this.actualizadoEn = LocalDateTime.now();
-    }
-
-    public void actualizarCorreo(String nuevoCorreo) {
-        validarCorreo(nuevoCorreo);
-        this.correo = nuevoCorreo;
-        this.actualizadoEn = LocalDateTime.now();
-    }
-
-    public void actualizarTelefono(String nuevoTelefono) {
-        validarTelefono(nuevoTelefono);
-        this.telefono = nuevoTelefono;
-        this.actualizadoEn = LocalDateTime.now();
-    }
-
-    private void actualizarFecha() {
-        this.actualizadoEn = LocalDateTime.now();
     }
 
     private void validarCampos(String nombre, String apellidoPaterno, String apellidoMaterno,
@@ -145,11 +95,43 @@ public class Persona {
         }
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public LocalDateTime getActualizadoEn() {
+        return actualizadoEn;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Persona)) return false;
-        Persona persona = (Persona) o;
+        if (!(o instanceof Persona persona)) return false;
         return Objects.equals(id, persona.id);
     }
 

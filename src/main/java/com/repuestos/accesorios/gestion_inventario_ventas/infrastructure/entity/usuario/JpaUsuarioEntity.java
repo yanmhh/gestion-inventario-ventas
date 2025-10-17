@@ -6,6 +6,7 @@ import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "usuario")
 public class JpaUsuarioEntity {
@@ -18,7 +19,6 @@ public class JpaUsuarioEntity {
     @JoinColumn(name = "persona_id")
     private JpaPersonaEntity persona;
 
-    @Column(name = "contrasenia")
     private String contrasenia;
 
     @ManyToOne(fetch = FetchType.EAGER)

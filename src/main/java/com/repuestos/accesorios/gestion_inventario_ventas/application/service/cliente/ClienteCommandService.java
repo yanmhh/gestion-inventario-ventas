@@ -51,8 +51,11 @@ public class ClienteCommandService {
     }
 
     private void verificarUnicidadDocumentoYRuc(String documentoIdentidad, String rucEmpresa, Integer clienteIdExcluido) {
-        if (documentoIdentidad != null && !documentoIdentidad.isBlank()) {
-            var existeDocumento = clienteWriteRepository.findByDocumentoIdentidad(documentoIdentidad)
+        boolean documentoPresente = documentoIdentidad != null && !documentoIdentidad.isBlank();
+        boolean rucPresente = rucEmpresa != null && !rucEmpresa.isBlank();
+
+        if (documentoPresente) {
+            boolean existeDocumento = clienteWriteRepository.findByDocumentoIdentidad(documentoIdentidad)
                     .filter(c -> !c.getId().equals(clienteIdExcluido))
                     .isPresent();
             if (existeDocumento) {
@@ -60,8 +63,8 @@ public class ClienteCommandService {
             }
         }
 
-        if (rucEmpresa != null && !rucEmpresa.isBlank()) {
-            var existeRuc = clienteWriteRepository.findByPorRuc(rucEmpresa)
+        if (rucPresente) {
+            boolean existeRuc = clienteWriteRepository.findByPorRuc(rucEmpresa)
                     .filter(c -> !c.getId().equals(clienteIdExcluido))
                     .isPresent();
             if (existeRuc) {

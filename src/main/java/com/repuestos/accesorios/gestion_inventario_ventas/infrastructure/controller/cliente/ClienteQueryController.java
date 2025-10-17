@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/clientes/query")
 public class ClienteQueryController {
 
     private final ClienteQueryService clienteQueryService;
@@ -21,6 +21,7 @@ public class ClienteQueryController {
     @GetMapping
     public ResponseEntity<List<ClienteView>> listarTodos() {
         List<ClienteView> clientes = clienteQueryService.obtenerTodos();
+        System.out.println("wiii");
         return ResponseEntity.ok(clientes);
     }
 

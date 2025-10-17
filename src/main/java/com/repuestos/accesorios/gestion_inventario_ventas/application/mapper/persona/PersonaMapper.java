@@ -5,7 +5,11 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.persona.P
 
 import java.time.LocalDateTime;
 
-public class PersonaMapper {
+public final class PersonaMapper {
+
+    private PersonaMapper() {
+    }
+
     public static Persona toDomain(RegistroPersonaDto registroPersonaDto) {
         return new Persona(
                 null,
@@ -17,5 +21,16 @@ public class PersonaMapper {
                 LocalDateTime.now(),
                 LocalDateTime.now()
                 );
+    }
+
+    public static void mapUpdateData(RegistroPersonaDto dto, Persona persona) {
+        persona.actualizarPersona(
+                dto.getNombre(),
+                dto.getApellidoPaterno(),
+                dto.getApellidoMaterno(),
+                dto.getCorreo(),
+                dto.getTelefono(),
+                LocalDateTime.now()
+        );
     }
 }

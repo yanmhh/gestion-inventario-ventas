@@ -13,13 +13,9 @@ public class RegistroMovimientoDto {
     @JsonProperty("producto_id")
     private Integer productoId;
 
-    @NotNull(message = "El ID del tipo de movimiento es obligatorio.")
-    @JsonProperty("tipo_movimiento_id")
-    private Integer tipoMovimientoId;
-
-    @NotNull(message = "El ID del usuario es obligatorio.")
-    @JsonProperty("usuario_id")
-    private Integer usuarioId;
+    @NotNull(message = "Es obligatorio.")
+    @JsonProperty("tipo_movimiento")
+    private String tipoMovimiento;
 
     @Min(value = 1, message = "La cantidad debe ser mayor a 0.")
     private int cantidad;
@@ -35,8 +31,8 @@ public class RegistroMovimientoDto {
         return productoId;
     }
 
-    public Integer getTipoMovimientoId() {
-        return tipoMovimientoId;
+    public String getTipoMovimiento() {
+        return tipoMovimiento;
     }
 
     public int getCantidad() {
@@ -51,7 +47,4 @@ public class RegistroMovimientoDto {
         return fecha;
     }
 
-    public Integer getUsuarioId() {
-        return usuarioId;
-    }
 }

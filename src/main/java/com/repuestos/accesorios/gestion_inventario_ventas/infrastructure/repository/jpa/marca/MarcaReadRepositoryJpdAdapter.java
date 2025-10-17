@@ -3,10 +3,9 @@ package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.reposi
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.marca.Marca;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.marca.MarcaReadRepository;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.mapper.marca.MarcaMapperJpa;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -30,7 +29,7 @@ public class MarcaReadRepositoryJpdAdapter implements MarcaReadRepository {
     }
 
     @Override
-    public Page<Marca> findAll(Pageable pageable){
-        return springDataMarcaRepository.findAll(pageable).map(marcaMapperJpa::toDomain);
+    public List<Marca> findAll(){
+        return springDataMarcaRepository.findAll().stream().map(marcaMapperJpa::toDomain).toList();
     }
 }

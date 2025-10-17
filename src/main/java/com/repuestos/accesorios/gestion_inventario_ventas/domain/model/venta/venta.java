@@ -1,7 +1,6 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.domain.model.venta;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.cliente.Cliente;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.cotizacion.Cotizacion;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.vo.Dinero;
 
@@ -17,7 +16,6 @@ public class venta {
     private String tipoDocumento;
     private Dinero moneda;
     private BigDecimal total;
-    private Cotizacion cotizacion;
     private Usuario usuario;
     private String observaciones;
     private LocalDateTime creadoEn;

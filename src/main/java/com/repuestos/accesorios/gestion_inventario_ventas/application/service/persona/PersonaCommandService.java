@@ -32,6 +32,21 @@ public class PersonaCommandService {
     }
 
     @Transactional
+    public PersonaView actualizrPersona(Integer id, RegistroPersonaDto dto) {
+        Persona personaExistente = personaWriteRepository.findById(id)
+                .orElseThrow(() -> new PersonaNoEncontradaException("Persona con ID " + id + " no encontrada."));
+
+        if (!personaExistente.getCorreo().equals(dto.getCorreo()) &&
+                personaWriteRepository.existePorCorreo(dto.getCorreo())) {
+            throw new CorreoInvalidoException("Ya existe una persona registrada con este correo");
+        }
+
+        PersonaMapper.mapUpdateData(dto, personaExistente);
+        personaExistente = personaWriteRepository.save(personaExistente);
+        return PersonaViewMapper.toView(personaExistente);
+    }
+
+    @Transactional
     public void eliminarPersona(Integer id) {
         Persona persona = personaWriteRepository.findById(id)
                 .orElseThrow(() -> new PersonaNoEncontradaException("Persona con ID " + id + " no encontrada."));

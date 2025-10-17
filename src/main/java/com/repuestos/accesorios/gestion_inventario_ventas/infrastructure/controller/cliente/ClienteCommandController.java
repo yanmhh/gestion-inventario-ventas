@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/clientes/command")
 public class ClienteCommandController {
 
     private final ClienteCommandService clienteCommandService;
@@ -25,7 +25,7 @@ public class ClienteCommandController {
     public ResponseEntity<ClienteView> crearCliente(@Valid @RequestBody RegistroClienteDto dto, UriComponentsBuilder uriBuilder) {
         ClienteView clienteView = clienteCommandService.crearCliente(dto);
         URI location = uriBuilder
-                .path("/api/clientes/{id}")
+                .path("/api/clientes/command/{id}")
                 .buildAndExpand(clienteView.getId())
                 .toUri();
 

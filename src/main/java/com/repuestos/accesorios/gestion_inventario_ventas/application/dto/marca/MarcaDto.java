@@ -1,24 +1,20 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca;
 
-import jakarta.validation.constraints.NotNull;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.shared.Sanitize;
 import jakarta.validation.constraints.Size;
 
 public class MarcaDto {
 
-    @NotNull
-    private final Integer id;
 
+    @Sanitize
     @Size(max =100)
-    private final String nombre;
+    private String nombre;
 
-    public MarcaDto( Integer id, String nombre){
-        this.id = id ;
+    public MarcaDto( String nombre){
+
         this.nombre = nombre;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
     public String getNombre() {
         return nombre;

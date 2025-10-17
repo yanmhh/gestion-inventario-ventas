@@ -10,6 +10,10 @@ public class Marca {
         this.nombre = nombre;
     }
 
+    public void actualizarMarca(String nombre){
+        this.nombre = nombre;
+    }
+
     public Integer getId() {
         return id;
     }

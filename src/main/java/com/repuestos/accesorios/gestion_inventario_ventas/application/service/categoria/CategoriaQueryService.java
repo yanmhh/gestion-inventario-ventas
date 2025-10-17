@@ -1,6 +1,6 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.service.categoria;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.categoria.CategoriaDto;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.categoria.CategoriaView;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.categoria.CategoriaViewMapper;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.CategoriaNoEncontradaException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.categoria.Categoria;
@@ -8,6 +8,9 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.cate
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaQueryService {
@@ -18,16 +21,16 @@ public class CategoriaQueryService {
         this.categoriaReadRepository = categoriaReadRepository;
     }
 
-    public Page<CategoriaDto> listarTodosLasCategorias(Pageable pageable){
-        return categoriaReadRepository.findAll(pageable)
-                .map(CategoriaViewMapper::from);
+    public List<CategoriaView> listarTodosLasCategorias( ){
+        return categoriaReadRepository.findAll().stream()
+                .map(CategoriaViewMapper::toView).collect(Collectors.toList());
     }
 
-    public CategoriaDto obtenerCategoriaPorId(Integer id){
+    public CategoriaView obtenerCategoriaPorId(Integer id){
         Categoria categoria = categoriaReadRepository.findById(id)
                 .orElseThrow(()->new CategoriaNoEncontradaException("Categoria con ID " + id + " no encontrado."));
 
-        return CategoriaViewMapper.from(categoria);
+        return CategoriaViewMapper.toView(categoria);
     }
 
 }

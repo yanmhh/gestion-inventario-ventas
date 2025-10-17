@@ -19,7 +19,8 @@ public class LoginResponse {
         return this.refreshToken;
     }
 
-    public String getTokenType(){
-        return this.tokenType;
+    public String getTokenType() {
+        return tokenType;
     }
+
 }

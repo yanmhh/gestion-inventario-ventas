@@ -13,7 +13,7 @@ public class JpaClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(optional = false, cascade = CascadeType.PERSIST)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "persona_id", nullable = false)
     private JpaPersonaEntity persona;
 

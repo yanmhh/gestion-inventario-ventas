@@ -30,6 +30,11 @@ public class PersonaCommandController {
 
         return ResponseEntity.created(location).body(personaView);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<PersonaView> actualizarPersona(@PathVariable @Positive Integer id, @Valid @RequestBody RegistroPersonaDto dto){
+        PersonaView personaActualizada = personaCommandService.actualizrPersona(id, dto);
+        return ResponseEntity.ok(personaActualizada);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPersona(@PathVariable @Positive Integer id) {

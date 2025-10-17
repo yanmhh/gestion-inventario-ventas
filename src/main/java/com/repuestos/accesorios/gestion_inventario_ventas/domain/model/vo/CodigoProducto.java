@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public final class CodigoProducto {
 
-    private static final Pattern FORMATO_VALIDO = Pattern.compile("^[A-Z]{3}-\\d{4}$");
+    private static final Pattern FORMATO_VALIDO = Pattern.compile("^[A-Z0-9]{3,20}$");
     private final String codigo;
 
     public CodigoProducto(String codigo) {
@@ -24,10 +24,10 @@ public final class CodigoProducto {
         String codigoNormalizado = codigo.trim().toUpperCase();
 
         if (!FORMATO_VALIDO.matcher(codigoNormalizado).matches()) {
-            throw new IllegalArgumentException("Formato inválido. Se espera: AAA-1234.");
+            throw new IllegalArgumentException("Formato inválido. Se espera letras y números (3-20 caracteres)");
         }
 
-        return codigoNormalizado;
+        return codigoNormalizado ;
     }
 
     @Override

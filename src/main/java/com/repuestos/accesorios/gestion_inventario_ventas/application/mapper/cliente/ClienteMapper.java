@@ -33,10 +33,11 @@ public final class ClienteMapper {
     public static void mapUpdateData(Cliente cliente, RegistroClienteDto dto) {
         if (cliente == null || dto == null) return;
 
-        Persona personaActualizada = PersonaMapper.toDomain(dto.getPersona());
+        Persona persona = cliente.getPersona();
+        PersonaMapper.mapUpdateData(dto.getPersona(), persona);
 
         cliente.actualizarCliente(
-                personaActualizada,
+                persona,
                 dto.getTipoCliente() != null ? TipoCliente.valueOf(dto.getTipoCliente()) : null,
                 dto.getRazonSocial(),
                 dto.getDocumentoIdentidad(),

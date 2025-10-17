@@ -1,6 +1,7 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.usuario;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.persona.RegistroPersonaDto;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.shared.Sanitize;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.EstadoUsuario;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ public class RegistroUsuarioDto {
     @NotNull(message = "La persona es obligatoria")
     private RegistroPersonaDto persona;
 
+    @Sanitize
     @NotNull(message = "La contraseña es obligatoria")
     private String contrasenia;
 

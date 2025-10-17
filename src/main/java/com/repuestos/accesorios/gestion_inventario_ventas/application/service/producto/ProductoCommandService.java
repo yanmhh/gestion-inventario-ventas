@@ -35,17 +35,17 @@ public class ProductoCommandService {
     public ProductoView registrarProducto(RegisterProductoCommand registerRequest){
         verificarCodigoUnico(registerRequest.getCodigo(), null);
 
-        Marca marca = marcaWriteRepository.findById(registerRequest.getMarca().getId())
+        Marca marca = marcaWriteRepository.findById(registerRequest.getMarcaId())
                 .orElseThrow(()->new MarcaNoEncontradaException(
-                        "Marca no encontrada con ID" + registerRequest.getMarca().getId()));
+                        "Marca no encontrada con ID" + registerRequest.getMarcaId()));
 
-        Categoria categoria = categoriaWriteRepository.findById(registerRequest.getCategoria().getId())
+        Categoria categoria = categoriaWriteRepository.findById(registerRequest.getCategoriaId())
                 .orElseThrow(() -> new CategoriaNoEncontradaException(
-                        "Categoría no encontrada con ID " + registerRequest.getCategoria().getId()));
+                        "Categoría no encontrada con ID " + registerRequest.getCategoriaId()));
 
         Producto producto = ProductoMapper.from(registerRequest, marca ,categoria);
         producto = productoWriteRepository.save(producto);
-        return ProductoViewMapper.from(producto);
+        return ProductoViewMapper.toView(producto);
     }
 
     @Transactional
@@ -54,18 +54,18 @@ public class ProductoCommandService {
                 .orElseThrow(() -> new ProductoNoEncontradoException(String.format("Producto con ID %d no encontrado", id)));
 
         verificarCodigoUnico(updateRequest.getCodigo(), id);
-        Marca marca = marcaWriteRepository.findById(updateRequest.getMarca().getId())
+        Marca marca = marcaWriteRepository.findById(updateRequest.getMarcaId())
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Marca no encontrada con ID " + updateRequest.getMarca().getId()));
+                        "Marca no encontrada con ID " + updateRequest.getMarcaId()));
 
-        Categoria categoria = categoriaWriteRepository.findById(updateRequest.getCategoria().getId())
+        Categoria categoria = categoriaWriteRepository.findById(updateRequest.getCategoriaId())
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Categoría no encontrada con ID " + updateRequest.getCategoria().getId()));
+                        "Categoría no encontrada con ID " + updateRequest.getCategoriaId()));
 
         ProductoMapper.mapUpdateData(updateRequest, productoExistente, marca, categoria);
         productoExistente = productoWriteRepository.save(productoExistente);
 
-        return ProductoViewMapper.from(productoExistente);
+        return ProductoViewMapper.toView(productoExistente);
     }
 
     @Transactional

@@ -14,8 +14,6 @@ public class TipoClienteMapperJpa {
         return switch (entity) {
             case PERSONA_NATURAL -> TipoCliente.PERSONA_NATURAL;
             case EMPRESA -> TipoCliente.EMPRESA;
-            case MAYORISTA -> TipoCliente.MAYORISTA;
-            case MINORISTA -> TipoCliente.MINORISTA;
             default -> throw new ClienteInvalidoException("TipoClienteEntity desconocido: " + entity);
         };
     }
@@ -27,8 +25,7 @@ public class TipoClienteMapperJpa {
         return switch (domain) {
             case PERSONA_NATURAL -> TipoClienteEntity.PERSONA_NATURAL;
             case EMPRESA -> TipoClienteEntity.EMPRESA;
-            case MAYORISTA -> TipoClienteEntity.MAYORISTA;
-            case MINORISTA -> TipoClienteEntity.MINORISTA;
+
             default -> throw new ClienteInvalidoException("TipoCliente desconocido: " + domain);
         };
     }

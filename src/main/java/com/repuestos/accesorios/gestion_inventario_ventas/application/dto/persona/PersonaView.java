@@ -1,17 +1,26 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.persona;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 public class PersonaView {
 
-    private Integer id;
-    private String nombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
-    private String correo;
-    private String telefono;
-    private LocalDateTime creadoEn;
-    private LocalDateTime actualizadoEn;
+    private final Integer id;
+    private final String nombre;
+    @JsonProperty("apellido_paterno")
+    private final String apellidoPaterno;
+
+    @JsonProperty("apellido_materno")
+    private final String apellidoMaterno;
+
+    private final String correo;
+    private final String telefono;
+    @JsonProperty("creado_en")
+    private final LocalDateTime creadoEn;
+
+    @JsonProperty("actualizado_en")
+    private final LocalDateTime actualizadoEn;
 
     public PersonaView(Integer id, String nombre, String apellidoPaterno, String apellidoMaterno, String correo,
                        String telefono, LocalDateTime creadoEn, LocalDateTime actualizadoEn) {
@@ -23,9 +32,6 @@ public class PersonaView {
         this.telefono = telefono;
         this.creadoEn = creadoEn;
         this.actualizadoEn = actualizadoEn;
-    }
-
-    public PersonaView() {
     }
 
     public Integer getId() {

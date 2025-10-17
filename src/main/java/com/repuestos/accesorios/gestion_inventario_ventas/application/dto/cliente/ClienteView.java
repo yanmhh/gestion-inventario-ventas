@@ -1,5 +1,6 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.cliente;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.persona.PersonaView;
 
 import java.time.LocalDateTime;
@@ -7,13 +8,23 @@ import java.time.LocalDateTime;
 public class ClienteView {
 
     private final Integer id;
-    private PersonaView persona;
-    private String tipoCliente;
-    private String razonSocial;
-    private String documentoIdentidad;
-    private String rucEmpresa;
-    private LocalDateTime creadoEn;
-    private LocalDateTime actualizadoEn;
+    private final PersonaView persona;
+    @JsonProperty("tipo_cliente")
+    private final String tipoCliente;
+    @JsonProperty("razon_social")
+    private final String razonSocial;
+
+    @JsonProperty("documento_identidad")
+    private final String documentoIdentidad;
+
+    @JsonProperty("ruc_empresa")
+    private final String rucEmpresa;
+
+    @JsonProperty("creado_en")
+    private final LocalDateTime creadoEn;
+
+    @JsonProperty("actualizado_en")
+    private final LocalDateTime actualizadoEn;
 
     public ClienteView(Integer id, PersonaView persona, String tipoCliente, String razonSocial, String documentoIdentidad, String rucEmpresa, LocalDateTime creadoEn, LocalDateTime actualizadoEn) {
         this.id = id;

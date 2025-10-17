@@ -4,7 +4,6 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.inventari
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.vo.MovimientoStockId;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.movimientoStock.JpaMovimientoStockEntity;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.mapper.producto.ProductoMapperJpa;
-import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.mapper.tipoMovimiento.TipoMovimientoMapperJpa;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.mapper.usuario.UsuarioMapperJpa;
 import org.springframework.stereotype.Component;
 

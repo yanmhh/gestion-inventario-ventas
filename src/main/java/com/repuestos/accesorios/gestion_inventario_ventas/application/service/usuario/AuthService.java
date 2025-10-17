@@ -38,7 +38,7 @@ public class AuthService {
 
     public void register(RegistroUsuarioDto registerRequest){
         personaWriteRepository.findByCorreo(registerRequest.getPersona().getCorreo())
-                .ifPresent(u ->{ throw new BusinessException("El email ya está registrado");});
+                .ifPresent(u ->{ throw new EmailYaRegistradoException("El email ya está registrado");});
         Rol rol = rolRepository.findById(registerRequest.getRolId())
                 .orElseThrow(() -> new BusinessException("Rol no encontrado"));
         String hash = passwordEncoder.encode(registerRequest.getContrasenia());

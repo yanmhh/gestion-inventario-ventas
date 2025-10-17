@@ -3,15 +3,21 @@ package com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.ma
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaDto;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.marca.Marca;
 
-public class MarcaMapper {
+public final class MarcaMapper {
 
     private MarcaMapper(){
     }
 
-    public static Marca from (MarcaDto registerMarcaDto){
-        return  new Marca(
+    public static Marca toDomain (MarcaDto registerMarcaDto){
+        return new Marca(
                 null,
                 registerMarcaDto.getNombre()
+        );
+    }
+
+    public static void mapUpdateData(MarcaDto actualizar, Marca marca){
+        marca.actualizarMarca(
+                actualizar.getNombre()
         );
     }
 }

@@ -3,15 +3,23 @@ package com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.ca
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.categoria.CategoriaDto;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.categoria.Categoria;
 
-public class CategoriaMapper {
+public final class CategoriaMapper {
 
     private CategoriaMapper(){
     }
 
-    public static Categoria from(CategoriaDto registerCategoriaDto){
+    public static Categoria toDomain(CategoriaDto dto){
+        if (dto == null) return null;
+
         return new Categoria(
                 null,
-                registerCategoriaDto.getNombre()
+                dto.getNombre()
+        );
+    }
+
+    public static void mapUpdateData(CategoriaDto actualizar, Categoria categoria){
+        categoria.actualizarCategoria(
+                actualizar.getNombre()
         );
     }
 }

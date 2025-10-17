@@ -1,6 +1,7 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.service.marca;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaDto;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaView;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.marca.MarcaMapper;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.marca.MarcaViewMapper;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.MarcaNoEncontradaException;
@@ -16,10 +17,18 @@ public class MarcaCommandService {
         this.marcaWriteRepository = marcaWriteRepository;
     }
 
-    public MarcaDto registrarMarca (MarcaDto marcaDto){
-        Marca marca = MarcaMapper.from(marcaDto);
+    public MarcaView registrarMarca (MarcaDto marcaDto){
+        Marca marca = MarcaMapper.toDomain(marcaDto);
         marca = marcaWriteRepository.save(marca);
-        return MarcaViewMapper.from(marca);
+        return MarcaViewMapper.toView(marca);
+    }
+
+    public MarcaView actualizarMarca(Integer id, MarcaDto marca){
+        Marca macaExistente = marcaWriteRepository.findById(id)
+                .orElseThrow(() -> new MarcaNoEncontradaException("Marca con ID " + id + " no encontrada."));
+        MarcaMapper.mapUpdateData(marca, macaExistente);
+        Marca marcaActualizada = marcaWriteRepository.save(macaExistente);
+        return MarcaViewMapper.toView(marcaActualizada);
     }
 
     public void eliminarMarca(Integer id){

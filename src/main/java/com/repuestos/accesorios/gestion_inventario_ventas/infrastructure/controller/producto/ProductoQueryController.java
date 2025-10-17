@@ -32,7 +32,7 @@ public class ProductoQueryController {
         return ResponseEntity.ok(producto);
     }
 
-    @PostMapping("/filtrar")
+    @PostMapping ("/filtrar")
     public ResponseEntity<Page<ProductoView>> buscarPorFiltro(
             @RequestBody ProductoFilter filtro,
             Pageable pageable) {

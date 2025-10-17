@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class MovimientoStockView {
     private final Integer id;
     private final ProductoResumenDto producto;
-    private final TipoMovimientoDto tipoMovimiento;
+    private final String tipoMovimiento;
     private final int cantidad;
     private final String referencia;
     private final UsuarioResumenDto usuario;
@@ -16,7 +16,7 @@ public class MovimientoStockView {
     private final LocalDateTime creadoEn;
     private final LocalDateTime actualizadoEn;
 
-    public MovimientoStockView(Integer id, ProductoResumenDto producto, TipoMovimientoDto tipoMovimiento, int cantidad, String referencia, UsuarioResumenDto usuario, LocalDateTime fecha, LocalDateTime creadoEn, LocalDateTime actualizadoEn) {
+    public MovimientoStockView(Integer id, ProductoResumenDto producto, String tipoMovimiento, int cantidad, String referencia, UsuarioResumenDto usuario, LocalDateTime fecha, LocalDateTime creadoEn, LocalDateTime actualizadoEn) {
         this.id = id;
         this.producto = producto;
         this.tipoMovimiento = tipoMovimiento;
@@ -36,7 +36,7 @@ public class MovimientoStockView {
         return producto;
     }
 
-    public TipoMovimientoDto getTipoMovimiento() {
+    public String getTipoMovimiento() {
         return tipoMovimiento;
     }
 

@@ -15,6 +15,9 @@ public final class ProductoMapper {
     }
 
     public static Producto from(RegisterProductoCommand registerRequest, Marca marca, Categoria categoria){
+        if (registerRequest == null) return null;
+
+
         return new Producto(
                 null,
                 registerRequest.getNombre(),

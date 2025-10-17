@@ -1,7 +1,8 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.producto;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.categoria.CategoriaDto;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.categoria.CategoriaView;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaView;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,20 +12,34 @@ public class ProductoView {
     private final Integer id;
     private final String nombre;
     private final String descripcion;
+
+    @JsonProperty("precio_venta")
     private final BigDecimal precioVenta;
+
+    @JsonProperty("costo_compra")
     private final BigDecimal costoCompra;
     private final int stock;
+
+    @JsonProperty("stock_minimo")
     private final int stockMinimo;
     private final String codigo;
+
+    @JsonProperty("imagen_url")
     private final String imagenUrl;
-    private final MarcaDto marca;
-    private final CategoriaDto categoria;
+
+    private final MarcaView marca;
+    private final CategoriaView categoria;
+
+    @JsonProperty("creado_en")
     private final LocalDateTime creadoEn;
+
+    @JsonProperty("actualizado_en")
     private final LocalDateTime actualizadoEn;
+
     private final boolean stockBajo;
 
     public ProductoView(Integer id, String nombre, String descripcion, BigDecimal precioVenta,BigDecimal costoCompra, int stock
-            ,int stockMinimo, String codigo, String imagenUrl,MarcaDto marca, CategoriaDto categoria, LocalDateTime creadoEn,
+            ,int stockMinimo, String codigo, String imagenUrl,MarcaView marca, CategoriaView categoria, LocalDateTime creadoEn,
                         LocalDateTime actualizadoEn, boolean stockBajo) {
         this.id = id;
         this.nombre = nombre;
@@ -78,11 +93,11 @@ public class ProductoView {
         return this.imagenUrl;
     }
 
-    public MarcaDto getMarca() {
+    public MarcaView getMarca() {
         return this.marca;
     }
 
-    public CategoriaDto getCategoria() {
+    public CategoriaView getCategoria() {
         return this.categoria;
     }
 

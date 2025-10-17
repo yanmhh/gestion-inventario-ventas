@@ -17,9 +17,11 @@ public class UpdateProductoCommand {
 
     @NotNull
     @DecimalMin(value = "0.0", inclusive = false)
+    @JsonProperty("precio_venta")
     private BigDecimal precioVenta;
 
     @NotNull
+    @JsonProperty("costo_compra")
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal costoCompra;
 
@@ -40,11 +42,14 @@ public class UpdateProductoCommand {
 
     @NotNull
     @JsonProperty("marca_id")
-    private Marca marca;
+    private Integer marcaId;
 
     @NotNull
     @JsonProperty("categoria_id")
-    private Categoria categoria;
+    private Integer categoriaId;
+
+    public UpdateProductoCommand() {
+    }
 
     public String getNombre() {
         return nombre;
@@ -78,12 +83,12 @@ public class UpdateProductoCommand {
         return this.imagenUrl;
     }
 
-    public Marca getMarca(){
-        return this.marca;
+    public Integer getMarcaId(){
+        return this.marcaId;
     }
 
-    public Categoria getCategoria(){
-        return  this.categoria;
+    public Integer getCategoriaId(){
+        return  this.categoriaId;
     }
 
 }

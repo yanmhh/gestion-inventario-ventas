@@ -58,11 +58,25 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/actuator/health", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        //acceso a metodos http de productos
                         .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/productos/filtrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/productos/**").hasAnyRole("ADMIN", "VENDEDOR")
                         .requestMatchers(HttpMethod.PUT, "/api/productos/**").hasAnyRole("ADMIN", "VENDEDOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/productos/**").hasAnyRole("ADMIN", "VENDEDOR")
+
+                        //acceso a metodos http de marcas
+                        .requestMatchers(HttpMethod.GET,"/api/marcas/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/marcas/**").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.PUT,"/api/marcas/**").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.DELETE,"/api/marcas/**").hasAnyRole("ADMIN", "VENDEDOR")
+
+                        //acceso a metodos http de categorias
+                        .requestMatchers(HttpMethod.GET,"/api/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/categorias/**").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.PUT,"/api/categorias/**").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.DELETE,"/api/categorias/**").hasAnyRole("ADMIN", "VENDEDOR")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -75,7 +89,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200,http://localhost:42005173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:17311"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

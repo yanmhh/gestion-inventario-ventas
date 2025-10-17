@@ -3,10 +3,9 @@ package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.reposi
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.categoria.Categoria;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.categoria.CategoriaReadRepository;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.mapper.categoria.CategoriaMapperJpa;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -30,7 +29,7 @@ public class CategoriaReadRepositoryJpaAdapter implements CategoriaReadRepositor
     }
 
     @Override
-    public Page<Categoria> findAll(Pageable pageable){
-        return springDataCategoriaRepository.findAll(pageable).map(categoriaMapperJpa::toDomain);
+    public List<Categoria> findAll(){
+        return springDataCategoriaRepository.findAll().stream().map(categoriaMapperJpa::toDomain).toList();
     }
 }

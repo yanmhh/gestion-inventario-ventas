@@ -1,13 +1,14 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.service.marca;
 
-import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaDto;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.marca.MarcaView;
 import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.marca.MarcaViewMapper;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.MarcaNoEncontradaException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.marca.Marca;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.marca.MarcaReadRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MarcaQueryService {
@@ -17,14 +18,14 @@ public class MarcaQueryService {
         this.marcaReadRepository = marcaReadRepository;
     }
 
-    public Page<MarcaDto> listarTodasLasMarcas (Pageable pageable){
-        return marcaReadRepository.findAll(pageable)
-                .map(MarcaViewMapper::from);
+    public List<MarcaView> listarTodasLasMarcas ( ){
+        return marcaReadRepository.findAll().stream()
+                .map(MarcaViewMapper::toView).collect(Collectors.toList());
     }
 
-    public MarcaDto obtenerMarcaPorId(Integer id){
+    public MarcaView obtenerMarcaPorId(Integer id){
         Marca marca = marcaReadRepository.findById(id)
                 .orElseThrow(()-> new MarcaNoEncontradaException("Marca con ID " + id + " no encontrado."));
-        return  MarcaViewMapper.from(marca);
+        return  MarcaViewMapper.toView(marca);
     }
 }

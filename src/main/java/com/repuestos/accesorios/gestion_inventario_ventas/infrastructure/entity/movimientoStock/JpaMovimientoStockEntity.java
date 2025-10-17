@@ -1,7 +1,6 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.movimientoStock;
 
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.producto.JpaProductoEntity;
-import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.tipoMovimiento.JpaTipoMovimientoEntity;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.usuario.JpaUsuarioEntity;
 import jakarta.persistence.*;
 
@@ -16,19 +15,24 @@ public class JpaMovimientoStockEntity {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "producto_id")
+    @JoinColumn(name = "producto_id", nullable = false)
     private JpaProductoEntity producto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipo_movimiento_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_movimiento", nullable = false)
     private JpaTipoMovimientoEntity tipoMovimiento;
 
+    @Column(name = "cantidad", nullable = false)
     private int cantidad;
+
+    @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
+
+    @Column(name = "referencia")
     private String referencia;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name= "usuario_id")
+    @JoinColumn(name= "usuario_id", nullable = false)
     private JpaUsuarioEntity usuario;
 
     @Column(name = "creado_en")

@@ -29,14 +29,14 @@ public class ProductoSpecificationJpa {
 
             if (filter.getPrecioMin() != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(
-                        root.get("precio"),
+                        root.get("precioVenta"),
                         filter.getPrecioMin()
                 ));
             }
 
             if (filter.getPrecioMax() != null) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(
-                        root.get("precio"),
+                        root.get("precioVenta"),
                         filter.getPrecioMax()
                 ));
             }

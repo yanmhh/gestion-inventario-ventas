@@ -1,5 +1,7 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.service.usuario;
 
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.usuario.UsuarioView;
+import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.usuario.UsuarioViewMapper;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.UsuarioNoEncontradoException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioReadRepository;
@@ -13,8 +15,8 @@ public class UserQueryService {
         this.usuarioReadRepository = usuarioReadRepository;
     }
 
-    public Usuario getById(Integer id){
-        return usuarioReadRepository.findById(id)
+    public UsuarioView getById(Integer id){
+        return usuarioReadRepository.findById(id).map(UsuarioViewMapper::toView)
                 .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
     }
 }

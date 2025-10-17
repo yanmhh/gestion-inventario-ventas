@@ -11,7 +11,6 @@ public class LoginRequest {
     private String correo;
 
     @NotBlank
-    @JsonProperty("contraseña")
     private String contrasenia;
 
     public String getCorreo(){

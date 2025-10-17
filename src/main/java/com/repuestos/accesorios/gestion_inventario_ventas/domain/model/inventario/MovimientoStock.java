@@ -5,7 +5,7 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.Stock
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.producto.Producto;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.vo.MovimientoStockId;
-
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.TipoMovimientoInvalidoException;
 import java.time.LocalDateTime;
 
 public class MovimientoStock {
@@ -23,6 +23,9 @@ public class MovimientoStock {
     public MovimientoStock(MovimientoStockId  id, Producto producto, TipoMovimiento tipoMovimiento, int cantidad,
                            LocalDateTime fecha, String referencia, Usuario usuario, LocalDateTime creadoEn, LocalDateTime actualizadoEn){
         validar(producto, tipoMovimiento, cantidad, fecha);
+
+        LocalDateTime ahora = LocalDateTime.now();
+
         this.id = id;
         this.producto = producto;
         this.tipoMovimiento = tipoMovimiento;
@@ -30,8 +33,65 @@ public class MovimientoStock {
         this.fecha = fecha != null ? fecha : LocalDateTime.now();
         this.referencia = referencia;
         this.usuario = usuario;
-        this.creadoEn = creadoEn != null ? creadoEn : LocalDateTime.now();
-        this.actualizadoEn = actualizadoEn != null ? actualizadoEn : LocalDateTime.now();
+        this.creadoEn = creadoEn != null ? creadoEn : ahora;
+        this.actualizadoEn = actualizadoEn != null ? actualizadoEn : ahora;
+    }
+
+    public void aplicarMovimiento() {
+        procesarCambioDeStock();
+        this.actualizadoEn = LocalDateTime.now();
+    }
+
+    private void procesarCambioDeStock() {
+        switch (tipoMovimiento) {
+            case ENTRADA, DEVOLUCION_CLIENTE -> producto.incrementarStock(cantidad);
+            case SALIDA, DEVOLUCION_PROVEEDOR -> {
+                if (producto.getStock() < cantidad) {
+                    throw new StockInsuficienteException("Stock insuficiente para realizar el movimiento. Producto: " + producto.getNombre());
+                }
+                producto.decrementarStock(cantidad);
+            }
+            default -> throw new TipoMovimientoInvalidoException("Tipo de movimiento no soportado: " + tipoMovimiento);
+        }
+    }
+
+    private void validarProducto(Producto producto){
+        if (producto == null)throw new ProductoNoEncontradoException("Prducto no puede ser null.");
+    }
+
+    private  void validarTipoMovimiento(TipoMovimiento tipoMovimiento){
+        if (tipoMovimiento == null ) throw new TipoMovimientoInvalidoException("Tipo de movimiento no puede ser null.");
+    }
+
+    private void validarCantidad(int cantidad){
+        if (cantidad <= 0) throw new IllegalArgumentException("Cantidad debe ser mayor a 0.");
+    }
+
+    private void validarFecha(LocalDateTime fecha){
+        if (fecha == null || fecha.isAfter(LocalDateTime.now())) throw new IllegalArgumentException("Fecha invalida.");
+    }
+
+    private void validar(Producto producto, TipoMovimiento tipoMovimiento, int cantidad, LocalDateTime fecha){
+        validarProducto(producto);
+        validarTipoMovimiento(tipoMovimiento);
+        validarCantidad(cantidad);
+        validarFecha(fecha);
+    }
+
+    public static MovimientoStock crearNuevo(Producto producto, TipoMovimiento tipoMovimiento,
+                                             int cantidad, String referencia, Usuario usuario) {
+        LocalDateTime ahora = LocalDateTime.now();
+        return new MovimientoStock(
+                new MovimientoStockId(0),
+                producto,
+                tipoMovimiento,
+                cantidad,
+                ahora,
+                referencia,
+                usuario,
+                ahora,
+                ahora
+        );
     }
 
     public MovimientoStockId getId() {
@@ -69,56 +129,5 @@ public class MovimientoStock {
     public LocalDateTime getActualizadoEn() {
         return actualizadoEn;
     }
-
-    public static MovimientoStock crearNuevo(Producto producto, TipoMovimiento tipoMovimiento,
-                                             int cantidad, String referencia, Usuario usuario) {
-        return new MovimientoStock(
-                new MovimientoStockId(0),
-                producto,
-                tipoMovimiento,
-                cantidad,
-                LocalDateTime.now(),
-                referencia,
-                usuario,
-                LocalDateTime.now(),
-                LocalDateTime.now()
-        );
-    }
-
-    public void aplicarMovimiento() {
-        if (tipoMovimiento.esEntrada()) {
-            producto.incrementarStock(cantidad);
-        } else if (tipoMovimiento.esSalida()) {
-            if (producto.getStock() < cantidad) {
-                throw new StockInsuficienteException("Stock insuficiente para realizar la salida." + producto.getNombre());
-            }
-            producto.decrementarStock(cantidad);
-        }
-        this.actualizadoEn = LocalDateTime.now();
-    }
-
-    private void validarProducto(Producto producto){
-        if (producto == null)throw new ProductoNoEncontradoException("Prducto no puede ser null.");
-    }
-
-    private  void validarTipoMovimiento(TipoMovimiento tipoMovimiento){
-        if (tipoMovimiento == null ) throw new IllegalArgumentException("Tipo de movimiento no puede ser null.");
-    }
-
-    private void validarCantidad(int cantidad){
-        if (cantidad <= 0) throw new IllegalArgumentException("Cantidad debe ser mayor a 0.");
-    }
-
-    private void validarFecha(LocalDateTime fecha){
-        if (fecha == null || fecha.isAfter(LocalDateTime.now())) throw new IllegalArgumentException("Fecha invalida.");
-    }
-
-    private void validar(Producto producto, TipoMovimiento tipoMovimiento, int cantidad, LocalDateTime fecha){
-        validarProducto(producto);
-        validarTipoMovimiento(tipoMovimiento);
-        validarCantidad(cantidad);
-        validarFecha(fecha);
-    }
-
 
 }

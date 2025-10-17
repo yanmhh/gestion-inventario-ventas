@@ -10,6 +10,10 @@ public class Categoria {
         this.nombre = nombre;
     }
 
+    public void actualizarCategoria(String nombre){
+        this.nombre =nombre;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -8,18 +8,25 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.U
 
 import java.time.LocalDateTime;
 
-public class MovimientoStockMapper {
+public final class MovimientoStockMapper {
     private MovimientoStockMapper(){
     }
 
-    public static MovimientoStock from(RegistroMovimientoDto registerMovimientoStrockDto, Producto producto, TipoMovimiento tipoMovimiento, Usuario usuario){
+    public static MovimientoStock from(RegistroMovimientoDto registroMovimiento, Producto producto, Usuario usuario){
+
+        if (registroMovimiento == null || producto == null || usuario == null) {
+            throw new IllegalArgumentException("Los parámetros registroMovimiento, producto y usuario no pueden ser null");
+        }
+
+        TipoMovimiento tipoMovimiento = TipoMovimiento.fromString(registroMovimiento.getTipoMovimiento());
+
         return new MovimientoStock(
                 null,
                 producto,
                 tipoMovimiento,
-                registerMovimientoStrockDto.getCantidad(),
-                registerMovimientoStrockDto.getFecha(),
-                registerMovimientoStrockDto.getReferencia(),
+                registroMovimiento.getCantidad(),
+                registroMovimiento.getFecha(),
+                registroMovimiento.getReferencia(),
                 usuario,
                 LocalDateTime.now(),
                 LocalDateTime.now()
