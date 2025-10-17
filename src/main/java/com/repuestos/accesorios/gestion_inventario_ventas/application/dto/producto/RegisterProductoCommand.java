@@ -1,19 +1,16 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.producto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.repuestos.accesorios.gestion_inventario_ventas.application.shared.Sanitize;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
 public class RegisterProductoCommand {
 
-    @Sanitize
     @NotBlank
     @Size(max = 100)
     private String nombre;
 
-    @Sanitize
     @NotBlank
     @Size(max = 250)
     private String descripcion;
@@ -33,20 +30,16 @@ public class RegisterProductoCommand {
     @JsonProperty("stock_minimo")
     private int stockMinimo;
 
-    @Sanitize
     @NotBlank
     @Size(max = 30)
     private String codigo;
 
-    @Sanitize
     @JsonProperty("imagen_url")
     private String imagenUrl;
 
-    @NotNull
     @JsonProperty("marca_id")
     private Integer marcaId;
 
-    @NotNull
     @JsonProperty("categoria_id")
     private Integer categoriaId;
 

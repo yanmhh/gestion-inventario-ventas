@@ -28,7 +28,6 @@ public class UpdateProductoCommand {
     @Min(0)
     private int stock;
 
-    @Min(0)
     @JsonProperty("stock_minimo")
     private int stockMinimo;
 
