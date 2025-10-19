@@ -35,3 +35,6 @@ out/
 # Logs y temporales
 *.log
 *.tmp
+
+# Ignora propiedades de producción con datos sensibles
+src/main/resources/application-prod.properties

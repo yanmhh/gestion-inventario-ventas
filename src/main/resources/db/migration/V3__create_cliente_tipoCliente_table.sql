@@ -1,8 +1,6 @@
 CREATE TYPE tipo_cliente AS ENUM (
     'PERSONA_NATURAL',
-    'EMPRESA',
-    'MAYORISTA',
-    'MINORISTA'
+    'EMPRESA'
 );
 
 CREATE TABLE cliente (
@@ -10,7 +8,7 @@ CREATE TABLE cliente (
     persona_id INTEGER NOT NULL UNIQUE,
     tipo_cliente VARCHAR  NOT NULL,
     razon_social VARCHAR(255),
-    documento_identidad VARCHAR(255) NOT NULL UNIQUE,
+    documento_identidad VARCHAR(20) NOT NULL UNIQUE,
     ruc_empresa VARCHAR(255) UNIQUE,
     creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     actualizado_en TIMESTAMP,

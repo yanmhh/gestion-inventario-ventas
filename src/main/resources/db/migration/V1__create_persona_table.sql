@@ -11,4 +11,4 @@ CREATE TABLE persona (
 
 -- Insert de Persona
 INSERT INTO persona (nombre, apellido_paterno, apellido_materno, correo, telefono, creado_en, actualizado_en)
-VALUES('yan', 'apellido', 'apellido','admin@empresa.com', '912345678', now(), now());
+VALUES('yan', 'Huaman', 'Huaman','admin@empresa.com', '912345678', now(), now());
