@@ -69,7 +69,8 @@ public class AuthService {
         var claims = jwtProvider.validateAndGetClaims(refreshToken, true);
         Integer userId = claims.get("uid",Integer.class);
 
-        List<String> roles = claims.get("rol", List.class);
+        @SuppressWarnings("unchecked")
+        List<String> roles = (List<String>) claims.get("rol");
         String newAccess = jwtProvider.generateAccessToken(userId,  roles);
         String newRefresh = jwtProvider.generateRefreshToken(userId, roles);
         return new LoginResponse(newAccess, newRefresh); }

@@ -61,3 +61,7 @@ tasks.named('test') {
 tasks.named('bootRun') {
     mainClass.set("com.repuestos.accesorios.gestion_inventario_ventas.GestionInventarioVentasApplication")
 }
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
+}
