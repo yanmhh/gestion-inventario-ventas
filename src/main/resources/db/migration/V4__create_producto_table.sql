@@ -19,7 +19,7 @@ CREATE TABLE producto (
     stock INTEGER NOT NULL DEFAULT 0,
     stock_minimo INTEGER NOT NULL DEFAULT 2,
     codigo VARCHAR(50) NOT NULL UNIQUE,
-    imagen_url VARCHAR(500),
+    imagen_url VARCHAR(5000),
     marca_id INTEGER NOT NULL,
     categoria_id INTEGER NOT NULL,
     creado_en TIMESTAMP DEFAULT NOW(),
