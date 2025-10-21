@@ -29,7 +29,7 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${app.cors.allowed-origin}")
+    @Value("${app.cors.allowed-origin:*}")
     private String allowedOrigin;
 
     private final JwtAuthFilter jwtAuthFilter;
