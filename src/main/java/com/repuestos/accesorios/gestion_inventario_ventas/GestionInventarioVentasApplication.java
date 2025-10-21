@@ -12,5 +12,7 @@ public class GestionInventarioVentasApplication {
 
         SpringApplication.run(GestionInventarioVentasApplication.class, args);
     }
+
+
 }
 
