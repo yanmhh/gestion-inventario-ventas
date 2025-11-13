@@ -15,11 +15,11 @@ public class Venta {
     private Cliente cliente ;
     private LocalDateTime fechaVenta;
     private EstadoVenta estado;
-    private String tipoDocumento;
+    private  String tipoDocumento;
     private BigDecimal total;
     private Usuario usuario;
     private String observaciones;
-    private LocalDateTime creadoEn;
+    private final LocalDateTime creadoEn;
     private LocalDateTime actualizadoEn;
     private final List<DetalleVenta> detalles = new ArrayList<>();
 
@@ -42,14 +42,20 @@ public class Venta {
     }
     public void agregarDetalle(DetalleVenta detalle) {
         validarDetalle(detalle);
+        detalle.asociarVenta(this);
         detalles.add(detalle);
         recalcularTotal();
     }
 
     public void confirmar() {
+        if (estado != EstadoVenta.PENDIENTE) {
+            throw new VentaInvalidaException("Solo se puede confirmar una venta en estado pendiente.");
+        }
+
         if (detalles.isEmpty()) {
             throw new VentaInvalidaException("No se puede confirmar una venta sin detalles.");
         }
+
         this.estado = EstadoVenta.CONFIRMADA;
         this.actualizadoEn = LocalDateTime.now();
     }
@@ -94,6 +100,15 @@ public class Venta {
                 .map(DetalleVenta::getSubTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public boolean estaPendiente() {
+        return estado == EstadoVenta.PENDIENTE; }
+
+    public boolean estaConfirmada() {
+        return estado == EstadoVenta.CONFIRMADA; }
+
+    public boolean estaAnulada() {
+        return estado == EstadoVenta.ANULADA; }
 
     public Integer getId() { return id; }
     public Cliente getCliente() { return cliente; }
