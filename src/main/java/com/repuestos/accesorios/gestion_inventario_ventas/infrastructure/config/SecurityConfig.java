@@ -77,6 +77,22 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT,"/api/categorias/**").hasAnyRole("ADMIN", "VENDEDOR")
                         .requestMatchers(HttpMethod.DELETE,"/api/categorias/**").hasAnyRole("ADMIN", "VENDEDOR")
 
+                        //acceso a metodos http de movimientos stock
+                        .requestMatchers(HttpMethod.GET,"/api/movimientos-stock/query").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/movimientos-stock/command").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.PUT,"/api/movimientos-stock/command/**").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.DELETE,"/api/movimientos-stock/command/**").hasAnyRole("ADMIN", "VENDEDOR")
+
+                        //acceso a metodos http de ventas
+                        .requestMatchers(HttpMethod.GET,"/api/ventas/query").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/ventas/command").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.PUT,"/api/ventas/command/**").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.DELETE,"/api/ventas/command/**").hasAnyRole("ADMIN", "VENDEDOR")
+
+
+                        //acceso a metodos http de usuarios
+
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

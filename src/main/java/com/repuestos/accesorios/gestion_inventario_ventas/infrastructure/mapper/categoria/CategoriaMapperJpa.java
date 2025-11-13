@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CategoriaMapperJpa {
+
     public Categoria toDomain(JpaCategoriaEntity entity){
         if(entity == null) return null;
         return new Categoria(

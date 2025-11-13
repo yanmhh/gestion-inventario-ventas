@@ -14,7 +14,7 @@ public class JpaMovimientoStockEntity {
     @Column(name = "movimiento_stock_id")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "producto_id", nullable = false)
     private JpaProductoEntity producto;
 
@@ -31,7 +31,7 @@ public class JpaMovimientoStockEntity {
     @Column(name = "referencia")
     private String referencia;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name= "usuario_id", nullable = false)
     private JpaUsuarioEntity usuario;
 

@@ -8,7 +8,6 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.persona.P
 
 import java.time.LocalDateTime;
 
-
 public final class ClienteMapper {
 
     private ClienteMapper() {

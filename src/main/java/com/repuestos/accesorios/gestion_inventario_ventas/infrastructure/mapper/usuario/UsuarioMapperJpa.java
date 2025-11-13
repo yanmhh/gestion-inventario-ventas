@@ -10,13 +10,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsuarioMapperJpa {
 
-    public  Usuario toDomain(JpaUsuarioEntity jpaUsuarioEntity){
+    private final PersonaMapperJpa personaMapperJpa;
+
+
+    public UsuarioMapperJpa(PersonaMapperJpa personaMapperJpa) {
+        this.personaMapperJpa = personaMapperJpa;
+    }
+
+    public Usuario toDomain(JpaUsuarioEntity jpaUsuarioEntity){
         if (jpaUsuarioEntity == null) {
             return null;
         }
         return new Usuario(
                 jpaUsuarioEntity.getId(),
-                PersonaMapperJpa.toDomain(jpaUsuarioEntity.getPersona()),
+                personaMapperJpa.toDomain(jpaUsuarioEntity.getPersona()),
                 jpaUsuarioEntity.getContrasenia(),
                 new Rol(
                         jpaUsuarioEntity.getRol().getId(),
@@ -26,13 +33,13 @@ public class UsuarioMapperJpa {
         );
     }
 
-    public  JpaUsuarioEntity toEntity(Usuario usuario){
+    public JpaUsuarioEntity toEntity(Usuario usuario){
             if (usuario == null) {
                 return null;
             }
         JpaUsuarioEntity jpaUsuarioEntity = new JpaUsuarioEntity();
         jpaUsuarioEntity.setId(usuario.getId());
-        jpaUsuarioEntity.setPersona(PersonaMapperJpa.toEntity(usuario.getPersona()));
+        jpaUsuarioEntity.setPersona(personaMapperJpa.toEntity(usuario.getPersona()));
         jpaUsuarioEntity.setContrasenia(usuario.getContrasenia());
 
         if (usuario.getRol() != null) {

@@ -9,3 +9,6 @@ CREATE TABLE persona (
     actualizado_en TIMESTAMP
 );
 
+INSERT INTO persona (nombre, apellido_paterno, apellido_materno, correo, telefono, creado_en, actualizado_en)
+VALUES('admin', 'admin', 'admin','admin@empresa.com', '912345678', now(), now());
+

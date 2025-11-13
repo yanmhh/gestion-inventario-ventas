@@ -33,8 +33,9 @@ public class MovimientoStockCommandController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<MovimientoStockView> registrarMovimiento(@RequestBody @Valid RegistroMovimientoDto dto, UriComponentsBuilder uriBuilder,
-                                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<MovimientoStockView> registrarMovimiento(
+            @RequestBody @Valid RegistroMovimientoDto dto, UriComponentsBuilder uriBuilder,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         Usuario usuario = usuarioWriteRepository.findById(userDetails.getUsuario().getId())
                 .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));

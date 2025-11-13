@@ -1,9 +1,3 @@
-CREATE TYPE tipo_movimiento AS ENUM (
-    'ENTRADA',
-    'SALIDA',
-    'DEVOLUCION_CLIENTE',
-    'DEVOLUCION_PROVEEDOR'
-);
 
 CREATE TABLE movimiento_stock (
     movimiento_stock_id SERIAL PRIMARY KEY,
@@ -24,4 +18,11 @@ CREATE TABLE movimiento_stock (
 
     CONSTRAINT fk_movimiento_usuario FOREIGN KEY (usuario_id)
         REFERENCES usuario(id) ON DELETE RESTRICT
+);
+
+CREATE TYPE tipo_movimiento AS ENUM (
+    'ENTRADA',
+    'SALIDA',
+    'DEVOLUCION_CLIENTE',
+    'DEVOLUCION_PROVEEDOR'
 );

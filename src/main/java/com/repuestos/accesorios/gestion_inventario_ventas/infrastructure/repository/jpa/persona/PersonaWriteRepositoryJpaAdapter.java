@@ -11,21 +11,24 @@ import java.util.Optional;
 public class PersonaWriteRepositoryJpaAdapter implements PersonaWriteRepository {
 
     private final SpringDataPersonaRepository springDataPersonaRepository;
+    private final PersonaMapperJpa personaMapperJpa;
 
-    public PersonaWriteRepositoryJpaAdapter(SpringDataPersonaRepository springDataPersonaRepository) {
+    public PersonaWriteRepositoryJpaAdapter(SpringDataPersonaRepository springDataPersonaRepository,
+                                            PersonaMapperJpa personaMapperJpa) {
         this.springDataPersonaRepository = springDataPersonaRepository;
+        this.personaMapperJpa = personaMapperJpa;
     }
 
     @Override
     public Optional<Persona> findById(Integer id) {
         return springDataPersonaRepository.findById(id)
-                .map(PersonaMapperJpa::toDomain);
+                .map(personaMapperJpa::toDomain);
     }
 
     @Override
     public Optional<Persona> findByCorreo(String correo) {
         return springDataPersonaRepository.findByCorreo(correo)
-                .map(PersonaMapperJpa::toDomain);
+                .map(personaMapperJpa::toDomain);
     }
 
     @Override
@@ -35,11 +38,11 @@ public class PersonaWriteRepositoryJpaAdapter implements PersonaWriteRepository 
 
     @Override
     public Persona save (Persona persona) {
-        return PersonaMapperJpa.toDomain(springDataPersonaRepository.save(PersonaMapperJpa.toEntity(persona)));
+        return personaMapperJpa.toDomain(springDataPersonaRepository.save(personaMapperJpa.toEntity(persona)));
     }
 
     @Override
     public void delete(Persona persona) {
-        springDataPersonaRepository.delete(PersonaMapperJpa.toEntity(persona));
+        springDataPersonaRepository.delete(personaMapperJpa.toEntity(persona));
     }
 }

@@ -1,32 +1,54 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.domain.model.venta;
 
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.VentaInvalidaException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.producto.Producto;
-
 import java.math.BigDecimal;
 
 public class DetalleVenta {
     private final Integer id;
-    private venta venta;
-    private Producto producto;
-    private int cantidad;
-    private BigDecimal precioUnitario;
-    private BigDecimal subTotal;
+    private final Producto producto;
+    private final int cantidad;
+    private final BigDecimal precioUnitario;
+    private Venta venta;
 
-    public DetalleVenta(Integer id, venta venta, Producto producto, int cantidad, BigDecimal precioUnitario, BigDecimal subTotal) {
+    public DetalleVenta(Integer id, Producto producto, int cantidad, BigDecimal precioUnitario) {
+        validarProducto(producto);
+        validarCantidad(cantidad);
+        validarPrecio(precioUnitario);
+
         this.id = id;
-        this.venta = venta;
         this.producto = producto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
-        this.subTotal = subTotal;
+    }
+
+    void asociarVenta(Venta venta) {
+        if (venta == null) {
+            throw new VentaInvalidaException("La venta asociada no puede ser nula.");
+        }
+        this.venta = venta;
+    }
+
+    private void validarProducto(Producto producto) {
+        if (producto == null) {
+            throw new VentaInvalidaException("El producto es obligatorio en el detalle de venta.");
+        }
+    }
+
+    private void validarCantidad(int cantidad) {
+        if (cantidad <= 0) {
+            throw new VentaInvalidaException("La cantidad debe ser mayor que cero.");
+        }
+    }
+
+    private void validarPrecio(BigDecimal precioUnitario) {
+        if (precioUnitario == null || precioUnitario.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new VentaInvalidaException("El precio unitario debe ser mayor que cero.");
+        }
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public venta getVenta() {
-        return venta;
     }
 
     public int getCantidad() {
@@ -42,6 +64,10 @@ public class DetalleVenta {
     }
 
     public BigDecimal getSubTotal() {
-        return subTotal;
+        return precioUnitario.multiply(BigDecimal.valueOf(cantidad));
+    }
+
+    public Venta getVenta() {
+        return venta;
     }
 }

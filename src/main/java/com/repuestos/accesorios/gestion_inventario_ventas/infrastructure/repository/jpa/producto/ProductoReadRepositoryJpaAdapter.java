@@ -39,8 +39,8 @@ public class ProductoReadRepositoryJpaAdapter implements ProductoReadRepository 
         try {
             return springDataProductoRepository.findById(id).map(productoMapperJpa::toDomain);
         }
-         catch (DataAccessException e){
-            throw  new RuntimeException("Error al acceder a la base de datos al buscar producto por id.", e);
+         catch (Exception e){
+            throw new RuntimeException("Error al acceder a la base de datos al buscar producto por id.", e);
          }
     }
 

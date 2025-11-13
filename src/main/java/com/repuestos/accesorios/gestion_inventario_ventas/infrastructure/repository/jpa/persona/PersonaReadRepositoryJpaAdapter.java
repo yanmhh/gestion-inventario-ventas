@@ -12,21 +12,24 @@ import java.util.stream.Collectors;
 @Repository
 public class PersonaReadRepositoryJpaAdapter implements PersonaReadRepository {
     private final SpringDataPersonaRepository springDataPersonaRepository;
+    private final PersonaMapperJpa personaMapperJpa;
 
-    public PersonaReadRepositoryJpaAdapter(SpringDataPersonaRepository springDataPersonaRepository) {
+    public PersonaReadRepositoryJpaAdapter(SpringDataPersonaRepository springDataPersonaRepository,
+                                           PersonaMapperJpa personaMapperJpa) {
         this.springDataPersonaRepository = springDataPersonaRepository;
+        this.personaMapperJpa = personaMapperJpa;
     }
 
     @Override
     public Optional<Persona> findById(Integer id) {
         return springDataPersonaRepository.findById(id)
-                .map(PersonaMapperJpa::toDomain);
+                .map(personaMapperJpa::toDomain);
     }
 
     @Override
     public Optional<Persona> findByCorreo(String correo) {
         return springDataPersonaRepository.findByCorreo(correo)
-                .map(PersonaMapperJpa::toDomain);
+                .map(personaMapperJpa::toDomain);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class PersonaReadRepositoryJpaAdapter implements PersonaReadRepository {
     public List<Persona> findAll() {
         return springDataPersonaRepository.findAll()
                 .stream()
-                .map(PersonaMapperJpa::toDomain)
+                .map(personaMapperJpa::toDomain)
                 .collect(Collectors.toList());
     }
 }

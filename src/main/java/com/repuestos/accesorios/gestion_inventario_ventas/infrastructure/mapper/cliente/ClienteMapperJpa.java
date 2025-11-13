@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClienteMapperJpa {
 
+    private final PersonaMapperJpa personaMapperJpa;
     private final TipoClienteMapperJpa tipoClienteMapperJpa;
 
-    public ClienteMapperJpa(TipoClienteMapperJpa tipoClienteMapperJpa) {
+    public ClienteMapperJpa(PersonaMapperJpa personaMapperJpa, TipoClienteMapperJpa tipoClienteMapperJpa) {
+        this.personaMapperJpa = personaMapperJpa;
         this.tipoClienteMapperJpa = tipoClienteMapperJpa;
     }
 
@@ -20,7 +22,7 @@ public class ClienteMapperJpa {
         }
         return new Cliente(
                 jpaClienteEntity.getId(),
-                PersonaMapperJpa.toDomain(jpaClienteEntity.getPersona()),
+                personaMapperJpa.toDomain(jpaClienteEntity.getPersona()),
                 tipoClienteMapperJpa.toDomain(jpaClienteEntity.getTipoCliente()),
                 jpaClienteEntity.getRazonSocial(),
                 jpaClienteEntity.getDocumentoIdentidad(),
@@ -35,7 +37,7 @@ public class ClienteMapperJpa {
         }
         JpaClienteEntity jpaClienteEntity = new JpaClienteEntity();
         jpaClienteEntity.setId(cliente.getId());
-        jpaClienteEntity.setPersona(PersonaMapperJpa.toEntity(cliente.getPersona()));
+        jpaClienteEntity.setPersona(personaMapperJpa.toEntity(cliente.getPersona()));
         jpaClienteEntity.setTipoCliente(tipoClienteMapperJpa.toEntity(cliente.getTipoCliente()));
         jpaClienteEntity.setRazonSocial(cliente.getRazonSocial());
         jpaClienteEntity.setDocumentoIdentidad(cliente.getDocumentoIdentidad());

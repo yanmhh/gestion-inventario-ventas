@@ -1,3 +1,7 @@
+CREATE TYPE tipo_cliente AS ENUM (
+    'PERSONA_NATURAL',
+    'EMPRESA'
+);
 
 CREATE TABLE cliente (
     id SERIAL PRIMARY KEY,

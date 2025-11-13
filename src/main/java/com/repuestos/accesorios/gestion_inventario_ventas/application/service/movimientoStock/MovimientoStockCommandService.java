@@ -29,7 +29,8 @@ public class MovimientoStockCommandService {
     @Transactional
     public MovimientoStockView registrarMovimiento(RegistroMovimientoDto dto, Usuario usuario) {
         Producto producto = productoWriteRepository.findById(dto.getProductoId())
-                .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado con ID: " + dto.getProductoId()));
+                .orElseThrow(() -> new ProductoNoEncontradoException(
+                        "Producto no encontrado con ID: " + dto.getProductoId()));
 
         MovimientoStock movimientoStock = MovimientoStockMapper.from(dto, producto, usuario);
 

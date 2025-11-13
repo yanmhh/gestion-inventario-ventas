@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface SpringDataProductoRepository extends JpaRepository<JpaProductoEntity, Integer> , JpaSpecificationExecutor<JpaProductoEntity> {
 
     Optional<JpaProductoEntity> findByNombre(String nombre);
-    Optional<JpaProductoEntity> findByCodigo(String codigo);}
+    Optional<JpaProductoEntity> findByCodigo(String codigo);
+}

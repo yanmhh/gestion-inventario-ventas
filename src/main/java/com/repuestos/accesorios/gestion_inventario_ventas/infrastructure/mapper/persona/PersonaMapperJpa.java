@@ -10,7 +10,7 @@ public class PersonaMapperJpa {
     private PersonaMapperJpa() {
     }
 
-    public static  Persona toDomain(JpaPersonaEntity jpaPersonaEntity) {
+    public Persona toDomain(JpaPersonaEntity jpaPersonaEntity) {
         if (jpaPersonaEntity == null) {
             return null;
         }
@@ -27,7 +27,7 @@ public class PersonaMapperJpa {
         );
     }
 
-    public static JpaPersonaEntity toEntity(Persona persona) {
+    public JpaPersonaEntity toEntity(Persona persona) {
         if (persona == null) {
             return null;
         }

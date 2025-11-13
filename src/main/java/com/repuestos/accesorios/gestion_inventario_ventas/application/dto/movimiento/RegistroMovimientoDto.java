@@ -3,10 +3,13 @@ package com.repuestos.accesorios.gestion_inventario_ventas.application.dto.movim
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
+@Getter
+@NoArgsConstructor
 public class RegistroMovimientoDto {
 
     @NotNull(message = "El ID del producto es obligatorio.")
@@ -23,28 +26,5 @@ public class RegistroMovimientoDto {
     private LocalDateTime fecha;
 
     private String referencia;
-
-    public RegistroMovimientoDto() {
-    }
-
-    public Integer getProductoId() {
-        return productoId;
-    }
-
-    public String getTipoMovimiento() {
-        return tipoMovimiento;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
 
 }

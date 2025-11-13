@@ -39,11 +39,11 @@ public class JpaProductoEntity {
     @Column (name = "imagen_url", length = 500)
     private String imagenUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn ( name = "marca_id")
     private JpaMarcaEntity marca;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn ( name = "categoria_id")
     private JpaCategoriaEntity categoria;
 

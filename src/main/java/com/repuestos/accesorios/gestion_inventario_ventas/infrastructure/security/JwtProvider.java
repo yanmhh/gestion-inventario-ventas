@@ -25,8 +25,8 @@ public class JwtProvider {
 
     public JwtProvider(@Value("${security.jwt.secret}") String secret,
                        @Value("${security.jwt.issuer:repuestos-ms}") String issuer,
-                       @Value("${security.jwt.access-ttl:9h}") Duration  accessTtl,
-                       @Value("${security.jwt.refresh-ttl:18h}") Duration  refreshTtl
+                       @Value("${security.jwt.access-ttl}") Duration  accessTtl,
+                       @Value("${security.jwt.refresh-ttl}") Duration  refreshTtl
     ) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.issuer = issuer;
@@ -56,20 +56,27 @@ public class JwtProvider {
     }
 
     public Claims validateAndGetClaims(String token, boolean expectRefresh) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .setAllowedClockSkewSeconds(60)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
 
-        String typ = claims.get("typ", String.class);
-        if (expectRefresh && !"refresh".equals(typ)) {
-            throw new JwtException("Se esperaba un token de refresh");
+            String typ = claims.get("typ", String.class);
+            if (expectRefresh && !"refresh".equals(typ)) {
+                throw new JwtException("Se esperaba un token de refresh");
+            }
+            if (!expectRefresh && !"access".equals(typ)) {
+                throw new JwtException("Se esperaba un token de acceso");
+            }
+            return claims;
+        } catch (io.jsonwebtoken.ExpiredJwtException e){
+            throw new JwtException("El token ha expirado");
+        } catch (JwtException e) {
+            throw new JwtException("Token inválido: " + e.getMessage());
         }
-        if (!expectRefresh && !"access".equals(typ)) {
-            throw new JwtException("Se esperaba un token de acceso");
-        }
-        return claims;
     }
 }
 
