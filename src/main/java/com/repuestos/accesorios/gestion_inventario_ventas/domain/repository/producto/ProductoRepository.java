@@ -1,0 +1,21 @@
+package com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.producto;
+
+import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.producto.ProductoFilter;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.producto.Producto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
+
+
+public interface ProductoRepository {
+    
+    Optional<Producto> findById(Integer id);
+    Optional<Producto> findByNombre(String nombre);
+    Optional<Producto> findByCodigo(String codigo);
+    Page<Producto> findAll(Pageable pageable);
+    Page<Producto> findAllConFiltro(ProductoFilter filtro, Pageable pageable);
+    
+    Producto save(Producto producto);
+    void delete(Producto producto);
+}
