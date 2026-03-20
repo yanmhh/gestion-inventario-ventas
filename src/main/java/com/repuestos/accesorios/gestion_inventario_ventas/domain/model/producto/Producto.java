@@ -115,10 +115,7 @@ public class Producto {
 
     private void validarStockMinimo(int stockMinimo){
         if (stockMinimo < 0){
-            throw new StockInvalidoException("El stock no puede ser negativo.");
-        }
-        if (stockMinimo > stock) {
-            throw new StockInvalidoException("El stock mínimo no puede ser mayor al stock inicial.");
+            throw new StockInvalidoException("El stock mínimo no puede ser negativo.");
         }
     }
 

@@ -4,9 +4,15 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.E
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.persona.JpaPersonaEntity;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.rol.JpaRolEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "usuario")
 public class JpaUsuarioEntity {
@@ -34,66 +40,6 @@ public class JpaUsuarioEntity {
 
     @Column(name = "actualizado_en")
     private LocalDateTime actualizadoEn;
-
-    public JpaUsuarioEntity(){
-
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public JpaPersonaEntity getPersona() {
-        return persona;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public JpaRolEntity getRol() {
-        return rol;
-    }
-
-    public EstadoUsuario getEstado() {
-        return estado;
-    }
-
-    public LocalDateTime getCreadoEn() {
-        return creadoEn;
-    }
-
-    public LocalDateTime getActualizadoEn() {
-        return actualizadoEn;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setPersona(JpaPersonaEntity persona) {
-        this.persona = persona;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
-
-    public void setRol(JpaRolEntity rol) {
-        this.rol = rol;
-    }
-
-    public void setEstado(EstadoUsuario estado) {
-        this.estado = estado;
-    }
-
-    public void setCreadoEn(LocalDateTime creadoEn) {
-        this.creadoEn = creadoEn;
-    }
-
-    public void setActualizadoEn(LocalDateTime actualizadoEn) {
-        this.actualizadoEn = actualizadoEn;
-    }
 
     @PrePersist
     protected void onCreate() {

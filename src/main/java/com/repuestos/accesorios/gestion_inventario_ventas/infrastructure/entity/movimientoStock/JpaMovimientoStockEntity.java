@@ -3,8 +3,14 @@ package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.producto.JpaProductoEntity;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.usuario.JpaUsuarioEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+@Getter
+@Setter
+@NoArgsConstructor
 
 @Entity
 @Table(name = "movimiento_stock")
@@ -40,81 +46,6 @@ public class JpaMovimientoStockEntity {
 
     @Column(name = "actualizado_en")
     private LocalDateTime actualizadoEn;
-
-    public JpaMovimientoStockEntity(){
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public JpaProductoEntity getProducto() {
-        return producto;
-    }
-
-    public JpaTipoMovimientoEntity getTipoMovimiento() {
-        return tipoMovimiento;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public JpaUsuarioEntity getUsuario() {
-        return usuario;
-    }
-
-    public LocalDateTime getCreadoEn() {
-        return creadoEn;
-    }
-
-    public LocalDateTime getActualizadoEn() {
-        return actualizadoEn;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setProducto(JpaProductoEntity producto) {
-        this.producto = producto;
-    }
-
-    public void setTipoMovimiento(JpaTipoMovimientoEntity tipoMovimiento) {
-        this.tipoMovimiento = tipoMovimiento;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
-
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
-
-    public void setUsuario(JpaUsuarioEntity usuario) {
-        this.usuario = usuario;
-    }
-
-    public void setCreadoEn(LocalDateTime creadoEn) {
-        this.creadoEn = creadoEn;
-    }
-
-    public void setActualizadoEn(LocalDateTime actualizadoEn) {
-        this.actualizadoEn = actualizadoEn;
-    }
 
     @PrePersist
     protected void onCreate(){

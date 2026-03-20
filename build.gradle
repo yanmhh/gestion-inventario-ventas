@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.5.4'
 	id 'io.spring.dependency-management' version '1.1.7'
     id 'org.flywaydb.flyway' version '10.14.0'
+    id "org.sonarqube" version "6.3.1.5724"
 
 }
 
@@ -65,4 +66,14 @@ tasks.named('bootRun') {
 
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "gestion-inventario-ventas-1"
+        property "sonar.projectName", "gestion-inventario-ventas-1"
+        property "sonar.projectVersion", "1.0"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.token", "sqp_fef2a351dfcbfacc15f32ff7223b75c8ab41ca67"
+    }
 }

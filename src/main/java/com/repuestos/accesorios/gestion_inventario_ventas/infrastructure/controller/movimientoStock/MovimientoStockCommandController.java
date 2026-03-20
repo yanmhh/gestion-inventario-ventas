@@ -5,7 +5,7 @@ import com.repuestos.accesorios.gestion_inventario_ventas.application.dto.movimi
 import com.repuestos.accesorios.gestion_inventario_ventas.application.service.movimientoStock.MovimientoStockCommandService;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.UsuarioNoEncontradoException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioWriteRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioRepository;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +23,12 @@ import java.net.URI;
 @RequestMapping("/api/movimientos-stock/command")
 public class MovimientoStockCommandController {
     private final MovimientoStockCommandService movimientoStockCommandService;
-    private final UsuarioWriteRepository usuarioWriteRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public MovimientoStockCommandController(MovimientoStockCommandService movimientoStockCommandService,
-                                            UsuarioWriteRepository usuarioWriteRepository) {
+                                            UsuarioRepository usuarioRepository) {
         this.movimientoStockCommandService = movimientoStockCommandService;
-        this.usuarioWriteRepository = usuarioWriteRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -37,7 +37,7 @@ public class MovimientoStockCommandController {
             @RequestBody @Valid RegistroMovimientoDto dto, UriComponentsBuilder uriBuilder,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        Usuario usuario = usuarioWriteRepository.findById(userDetails.getUsuario().getId())
+        Usuario usuario = usuarioRepository.findById(userDetails.getUsuario().getId())
                 .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
 
         MovimientoStockView movimientoCreado = movimientoStockCommandService.registrarMovimiento(dto, usuario);

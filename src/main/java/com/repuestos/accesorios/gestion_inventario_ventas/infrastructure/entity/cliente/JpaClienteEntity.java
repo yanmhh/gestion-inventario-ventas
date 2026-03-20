@@ -2,9 +2,15 @@ package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity
 
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.persona.JpaPersonaEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "cliente")
 public class JpaClienteEntity {
@@ -36,72 +42,6 @@ public class JpaClienteEntity {
     @Column(name = "actualizado_en")
     private LocalDateTime actualizadoEn;
 
-    public JpaClienteEntity() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public JpaPersonaEntity getPersona() {
-        return persona;
-    }
-
-    public TipoClienteEntity getTipoCliente() {
-        return tipoCliente;
-    }
-
-    public String getRazonSocial() {
-        return razonSocial;
-    }
-
-    public String getDocumentoIdentidad() {
-        return documentoIdentidad;
-    }
-
-    public String getRucEmpresa() {
-        return rucEmpresa;
-    }
-
-    public LocalDateTime getCreadoEn() {
-        return creadoEn;
-    }
-
-    public LocalDateTime getActualizadoEn() {
-        return actualizadoEn;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setPersona(JpaPersonaEntity persona) {
-        this.persona = persona;
-    }
-
-    public void setTipoCliente(TipoClienteEntity tipoCliente) {
-        this.tipoCliente = tipoCliente;
-    }
-
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
-    }
-
-    public void setDocumentoIdentidad(String documentoIdentidad) {
-        this.documentoIdentidad = documentoIdentidad;
-    }
-
-    public void setRucEmpresa(String rucEmpresa) {
-        this.rucEmpresa = rucEmpresa;
-    }
-
-    public void setCreadoEn(LocalDateTime creadoEn) {
-        this.creadoEn = creadoEn;
-    }
-
-    public void setActualizadoEn(LocalDateTime actualizadoEn) {
-        this.actualizadoEn = actualizadoEn;
-    }
 
     @PrePersist
     protected void onCreate() {
