@@ -6,28 +6,60 @@ Sistema integral de gestión de inventario, ventas y cotizaciones desarrollado c
 
 ## 🏗️ Arquitectura
 
-El proyecto implementa una **Arquitectura Hexagonal (Puertos y Adaptadores)** con separación de responsabilidades siguiendo los principios de Clean Architecture.
+El proyecto implementa una **Arquitectura Hexagonal (Puertos y Adaptadores)** combinada con **Domain-Driven Design (DDD)**, siguiendo los principios de Clean Architecture con **repositorios unificados**.
 
 ### Capas del Sistema
 
 ```
-├── domain/              # Lógica de negocio pura
-│   ├── model/          # Entidades de dominio
-│   ├── repository/     # Interfaces de repositorios (puertos)
-│   └── exception/      # Excepciones de dominio
+├── domain/                      # Lógica de negocio pura
+│   ├── model/                  # Entidades de dominio (agregados)
+│   ├── repository/             # Interfaces de repositorios (puertos de salida)
+│   │   └── XxxRepository      # Repositorio único por entidad
+│   ├── exception/              # Excepciones de dominio
+│   └── event/                  # Eventos de dominio
 │
-├── application/        # Casos de uso
-│   ├── dto/           # Data Transfer Objects
-│   ├── mapper/        # Mappers entre entidades y DTOs
-│   └── service/       # Servicios de aplicación
+├── application/                 # Casos de uso (puertos de entrada)
+│   ├── dto/                    # Data Transfer Objects
+│   ├── mapper/                 # Mappers entre entidades y DTOs
+│   └── service/                # Servicios de aplicación
+│       ├── XxxCommandService  # Operaciones de escritura
+│       └── XxxQueryService    # Operaciones de lectura
 │
-└── infrastructure/     # Adaptadores e implementaciones
-    ├── controller/    # Controladores REST
-    ├── entity/        # Entidades JPA
-    ├── repository/    # Implementaciones de repositorios
-    ├── security/      # Configuración de seguridad
-    └── config/        # Configuraciones generales
+└── infrastructure/              # Adaptadores e implementaciones
+    ├── controller/             # Controladores REST (adaptadores de entrada)
+    ├── entity/                 # Entidades JPA
+    ├── repository/             # Implementaciones de repositorios (adaptadores de salida)
+    │   └── jpa/
+    │       ├── base/
+    │       │   └── BaseRepositoryAdapter  # Clase base con métodos comunes
+    │       └── xxx/
+    │           ├── XxxRepositoryJpaAdapter      # Implementación única
+    │           └── SpringDataXxxRepository      # Repositorio Spring Data
+    ├── mapper/                 # Mappers JPA (Domain ↔ Entity)
+    ├── security/               # Configuración de seguridad (JWT, roles)
+    ├── notification/           # Notificaciones (Email, WebSocket)
+    └── config/                 # Configuraciones generales
 ```
+
+### Patrón de Repositorio Unificado
+
+Cada entidad tiene un **único repositorio** que maneja todas las operaciones (lectura y escritura):
+
+```
+Domain Layer:
+└── XxxRepository (interface)    ← Puerto único
+
+Infrastructure Layer:
+└── XxxRepositoryJpaAdapter      ← Adaptador único
+    └── extends BaseRepositoryAdapter<Domain, Entity, ID>
+```
+
+**Ventajas:**
+- ✅ Sin duplicación de código
+- ✅ Interfaz unificada por entidad
+- ✅ Arquitectura hexagonal preservada
+- ✅ DDD mantenido (agregados, entidades de valor)
+- ✅ Métodos comunes heredados de `BaseRepositoryAdapter`
 
 ## 🚀 Tecnologías Utilizadas
 

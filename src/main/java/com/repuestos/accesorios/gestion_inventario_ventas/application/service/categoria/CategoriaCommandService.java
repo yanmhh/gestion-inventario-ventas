@@ -6,35 +6,35 @@ import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.cat
 import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.categoria.CategoriaViewMapper;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.CategoriaNoEncontradaException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.categoria.Categoria;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.categoria.CategoriaWriteRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.categoria.CategoriaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CategoriaCommandService {
 
-    private final CategoriaWriteRepository categoriaWriteRepository;
+    private final CategoriaRepository categoriaRepository;
 
-    public CategoriaCommandService (CategoriaWriteRepository categoriaWriteRepository){
-        this.categoriaWriteRepository = categoriaWriteRepository;
+    public CategoriaCommandService (CategoriaRepository categoriaRepository){
+        this.categoriaRepository = categoriaRepository;
     }
 
     public CategoriaView registrarCategoria (CategoriaDto categoriaDto){
         Categoria categoria = CategoriaMapper.toDomain(categoriaDto);
-        categoria = categoriaWriteRepository.save(categoria);
+        categoria = categoriaRepository.save(categoria);
         return CategoriaViewMapper.toView(categoria);
     }
 
     public CategoriaView actualizarCategoria(Integer id,CategoriaDto categoria){
-        Categoria categoriaExistente = categoriaWriteRepository.findById(id)
+        Categoria categoriaExistente = categoriaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNoEncontradaException("Categoria con ID " + id + " no encontrada."));
         CategoriaMapper.mapUpdateData(categoria, categoriaExistente);
-        Categoria categoriaActualizada = categoriaWriteRepository.save(categoriaExistente);
+        Categoria categoriaActualizada = categoriaRepository.save(categoriaExistente);
         return CategoriaViewMapper.toView(categoriaActualizada);
     }
 
     public void eliminarCategoria( Integer id){
-        Categoria categoria = categoriaWriteRepository.findById(id)
+        Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaNoEncontradaException("Categoria con ID " + id + " no encontrada."));
-        categoriaWriteRepository.delete(categoria);
+        categoriaRepository.delete(categoria);
     }
 }

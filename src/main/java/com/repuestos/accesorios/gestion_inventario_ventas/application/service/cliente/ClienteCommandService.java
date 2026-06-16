@@ -7,16 +7,16 @@ import com.repuestos.accesorios.gestion_inventario_ventas.application.mapper.cli
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.ClienteNoEncontradoException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.ClienteYaExisteException;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.cliente.Cliente;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.cliente.ClienteWriteRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.cliente.ClienteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClienteCommandService {
-    private final ClienteWriteRepository clienteWriteRepository;
+    private final ClienteRepository clienteRepository;
 
-    public ClienteCommandService(ClienteWriteRepository clienteWriteRepository) {
-        this.clienteWriteRepository = clienteWriteRepository;
+    public ClienteCommandService(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
     @Transactional
@@ -24,30 +24,30 @@ public class ClienteCommandService {
         verificarUnicidadDocumentoYRuc(registroClienteDto.getDocumentoIdentidad(), registroClienteDto.getRucEmpresa(), null);
 
         var nuevoCliente = ClienteMapper.toDomain(registroClienteDto);
-        var clienteGuardado = clienteWriteRepository.save(nuevoCliente);
+        var clienteGuardado = clienteRepository.save(nuevoCliente);
 
         return ClienteViewMapper.toView(clienteGuardado);
     }
 
     @Transactional
     public ClienteView actualizarCliente(Integer clienteId, RegistroClienteDto updateDto) {
-        Cliente clienteExistente = clienteWriteRepository.findById(clienteId)
+        Cliente clienteExistente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ClienteNoEncontradoException("Cliente no encontrado con id: " + clienteId));
 
         verificarUnicidadDocumentoYRuc(updateDto.getDocumentoIdentidad(), updateDto.getRucEmpresa(), clienteId);
 
         ClienteMapper.mapUpdateData(clienteExistente,updateDto );
-        clienteExistente  = clienteWriteRepository.save(clienteExistente);
+        clienteExistente  = clienteRepository.save(clienteExistente);
 
         return ClienteViewMapper.toView(clienteExistente);
     }
 
     @Transactional
     public void eliminarCliente(Integer clienteId) {
-        Cliente clienteExistente = clienteWriteRepository.findById(clienteId)
+        Cliente clienteExistente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ClienteNoEncontradoException("Cliente no encontrado con id: " + clienteId));
 
-        clienteWriteRepository.delete(clienteExistente);
+        clienteRepository.delete(clienteExistente);
     }
 
     private void verificarUnicidadDocumentoYRuc(String documentoIdentidad, String rucEmpresa, Integer clienteIdExcluido) {
@@ -55,7 +55,7 @@ public class ClienteCommandService {
         boolean rucPresente = rucEmpresa != null && !rucEmpresa.isBlank();
 
         if (documentoPresente) {
-            boolean existeDocumento = clienteWriteRepository.findByDocumentoIdentidad(documentoIdentidad)
+            boolean existeDocumento = clienteRepository.findByDocumentoIdentidad(documentoIdentidad)
                     .filter(c -> !c.getId().equals(clienteIdExcluido))
                     .isPresent();
             if (existeDocumento) {
@@ -64,7 +64,7 @@ public class ClienteCommandService {
         }
 
         if (rucPresente) {
-            boolean existeRuc = clienteWriteRepository.findByPorRuc(rucEmpresa)
+            boolean existeRuc = clienteRepository.findByPorRuc(rucEmpresa)
                     .filter(c -> !c.getId().equals(clienteIdExcluido))
                     .isPresent();
             if (existeRuc) {

@@ -1,7 +1,13 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.marca;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "marca")
 public class JpaMarcaEntity {
@@ -12,24 +18,5 @@ public class JpaMarcaEntity {
 
     @Column(name = "nombre")
     private String nombre;
-
-    public JpaMarcaEntity(){
-    }
-
-    public Integer getId(){
-        return this.id;
-    }
-
-    public String getNombre(){
-        return this.nombre;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
 }

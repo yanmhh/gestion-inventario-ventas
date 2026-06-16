@@ -1,0 +1,412 @@
+{
+  "info": {
+    "name": "Sistema de Alertas - Pruebas",
+    "description": "Colección de endpoints para probar el sistema de alertas en tiempo real",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Autenticación",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"accessToken\", jsonData.accessToken);",
+                  "pm.environment.set(\"refreshToken\", jsonData.refreshToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@test.com\",\n  \"contrasenia\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Productos",
+      "item": [
+        {
+          "name": "Crear Producto con Stock",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Filtro de Aceite Premium\",\n  \"descripcion\": \"Filtro de alta calidad para motor\",\n  \"precioVenta\": 45.50,\n  \"costoCompra\": 30.00,\n  \"stock\": 15,\n  \"stockMinimo\": 10,\n  \"codigo\": \"FLT001\",\n  \"marcaId\": 1,\n  \"categoriaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            }
+          }
+        },
+        {
+          "name": "Listar Productos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Movimientos de Stock",
+      "item": [
+        {
+          "name": "Registrar Salida (Stock Bajo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Stock bajo - Alerta debe generarse\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    console.log(\"✅ Movimiento registrado. Verifica alertas en el siguiente request.\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productoId\": 1,\n  \"tipo\": \"SALIDA\",\n  \"cantidad\": 7,\n  \"motivo\": \"VENTA\",\n  \"notas\": \"Venta que genera alerta de stock bajo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/movimientos-stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "movimientos-stock"]
+            }
+          }
+        },
+        {
+          "name": "Registrar Entrada",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productoId\": 1,\n  \"tipo\": \"ENTRADA\",\n  \"cantidad\": 20,\n  \"motivo\": \"COMPRA\",\n  \"notas\": \"Reabastecimiento\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/movimientos-stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "movimientos-stock"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Alertas",
+      "item": [
+        {
+          "name": "Mis Alertas (Todas)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/mis-alertas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alertas", "mis-alertas"]
+            }
+          }
+        },
+        {
+          "name": "Mis Alertas No Leídas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Debe haber alertas no leídas\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.length).to.be.above(0);",
+                  "    ",
+                  "    if(jsonData.length > 0) {",
+                  "        pm.environment.set(\"alertaId\", jsonData[0].id);",
+                  "        console.log(\"🔔 Alerta encontrada: \" + jsonData[0].mensaje);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/mis-alertas/no-leidas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alertas", "mis-alertas", "no-leidas"]
+            }
+          }
+        },
+        {
+          "name": "Todas las Alertas No Leídas (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/todas/no-leidas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alertas", "todas", "no-leidas"]
+            }
+          }
+        },
+        {
+          "name": "Alertas de Usuario Específico",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/usuario/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alertas", "usuario", "1"]
+            }
+          }
+        },
+        {
+          "name": "Marcar Alerta como Leída",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/{{alertaId}}/marcar-leida",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alertas", "{{alertaId}}", "marcar-leida"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Flujo Completo - Test",
+      "item": [
+        {
+          "name": "Step 1: Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"accessToken\", jsonData.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@test.com\",\n  \"contrasenia\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Step 2: Crear Producto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"productoId\", jsonData.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Producto Test Alertas\",\n  \"descripcion\": \"Test del sistema de alertas\",\n  \"precioVenta\": 100.00,\n  \"costoCompra\": 50.00,\n  \"stock\": 12,\n  \"stockMinimo\": 10,\n  \"codigo\": \"TEST{{$randomInt}}\",\n  \"marcaId\": 1,\n  \"categoriaId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"]
+            }
+          }
+        },
+        {
+          "name": "Step 3: Registrar Salida que Genera Alerta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productoId\": {{productoId}},\n  \"tipo\": \"SALIDA\",\n  \"cantidad\": 5,\n  \"motivo\": \"VENTA\",\n  \"notas\": \"Test de alerta automática\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/movimientos-stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "movimientos-stock"]
+            }
+          }
+        },
+        {
+          "name": "Step 4: Verificar Alertas Generadas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Se generó alerta de stock bajo\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.length).to.be.above(0);",
+                  "    console.log(\"✅ Test exitoso: Se generó \" + jsonData.length + \" alerta(s)\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/mis-alertas/no-leidas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alertas", "mis-alertas", "no-leidas"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}

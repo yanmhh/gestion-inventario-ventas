@@ -8,9 +8,9 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.exception.*;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.persona.Persona;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.rol.Rol;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.Usuario;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.persona.PersonaWriteRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.persona.PersonaRepository;
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.rol.RolRepository;
-import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioWriteRepository;
+import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioRepository;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.security.JwtProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,36 +19,36 @@ import java.util.List;
 
 @Service
 public class AuthService {
-    private final UsuarioWriteRepository usuarioWriteRepository;
-    private final PersonaWriteRepository personaWriteRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PersonaRepository personaRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RolRepository rolRepository;
 
-    public AuthService(UsuarioWriteRepository usuarioWriteRepository,
-                       PersonaWriteRepository personaWriteRepository, PasswordEncoder passwordEncoder,
+    public AuthService(UsuarioRepository usuarioRepository,
+                       PersonaRepository personaRepository, PasswordEncoder passwordEncoder,
                        JwtProvider jwtProvider,
                        RolRepository rolRepository){
-        this.usuarioWriteRepository = usuarioWriteRepository;
-        this.personaWriteRepository = personaWriteRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.personaRepository = personaRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
         this.rolRepository = rolRepository;
     }
 
     public void register(RegistroUsuarioDto registerRequest){
-        personaWriteRepository.findByCorreo(registerRequest.getPersona().getCorreo())
+        personaRepository.findByCorreo(registerRequest.getPersona().getCorreo())
                 .ifPresent(u ->{ throw new EmailYaRegistradoException("El email ya está registrado");});
         Rol rol = rolRepository.findById(registerRequest.getRolId())
                 .orElseThrow(() -> new BusinessException("Rol no encontrado"));
         String hash = passwordEncoder.encode(registerRequest.getContrasenia());
         Usuario nuevo = UsuarioMapper.from(registerRequest, hash, rol);
-        usuarioWriteRepository.save(nuevo);
+        usuarioRepository.save(nuevo);
     }
     public LoginResponse login(LoginRequest request){
-        Persona persona = personaWriteRepository.findByCorreo(request.getCorreo())
+        Persona persona = personaRepository.findByCorreo(request.getCorreo())
                 .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
-        Usuario usuario = usuarioWriteRepository.findByPersonaId(persona.getId())
+        Usuario usuario = usuarioRepository.findByPersonaId(persona.getId())
                 .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
 
         usuario.asegurarActivo();

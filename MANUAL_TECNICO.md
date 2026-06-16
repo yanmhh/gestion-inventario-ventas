@@ -15,16 +15,17 @@
 
 ## 1. Arquitectura del Sistema
 
-### 1.1 Arquitectura Hexagonal (Puertos y Adaptadores)
+### 1.1 Arquitectura Hexagonal (Puertos y Adaptadores) + DDD
 
-El sistema implementa Clean Architecture con los siguientes componentes:
+El sistema implementa Clean Architecture con **repositorios unificados** (sin CQRS):
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    INFRASTRUCTURE                        │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │ Controllers  │  │  Security    │  │  Repository  │  │
-│  │   (REST)     │  │    (JWT)     │  │     (JPA)    │  │
+│  │   (REST)     │  │    (JWT)     │  │  Adapters    │  │
+│  │              │  │              │  │  (JPA Único) │  │
 │  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  │
 └─────────┼──────────────────┼──────────────────┼─────────┘
           │                  │                  │
@@ -32,8 +33,8 @@ El sistema implementa Clean Architecture con los siguientes componentes:
 │         ▼                  ▼                  ▼          │
 │              APPLICATION LAYER                           │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │   Services   │  │     DTOs     │  │   Mappers    │  │
-│  │  (Use Cases) │  │              │  │              │  │
+│  │ Command/Query│  │     DTOs     │  │   Mappers    │  │
+│  │   Services   │  │              │  │              │  │
 │  └──────┬───────┘  └──────────────┘  └──────────────┘  │
 └─────────┼──────────────────────────────────────────────┘
           │
@@ -42,9 +43,28 @@ El sistema implementa Clean Architecture con los siguientes componentes:
 │                   DOMAIN LAYER                           │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │   Entities   │  │  Repository  │  │  Exceptions  │  │
-│  │   (Models)   │  │  Interfaces  │  │   (Domain)   │  │
+│  │ (Aggregates) │  │  (Port Único)│  │   (Domain)   │  │
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
 └──────────────────────────────────────────────────────────┘
+```
+
+**Patrón de Repositorio Unificado:**
+
+Cada entidad tiene UN SOLO repositorio que maneja todas las operaciones:
+
+```
+Domain:
+└── ProductoRepository (interface única)
+    ├── findById(id)
+    ├── findAll()
+    ├── save(producto)
+    └── delete(producto)
+
+Infrastructure:
+└── ProductoRepositoryJpaAdapter (implementación única)
+    └── extends BaseRepositoryAdapter<Producto, JpaProductoEntity, Integer>
+        ├── toDomain()  - Convierte JPA → Domain
+        └── toEntity()  - Convierte Domain → JPA
 ```
 
 ### 1.2 Flujo de una Petición

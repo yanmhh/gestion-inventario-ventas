@@ -83,11 +83,30 @@ public class Usuario {
 
     private void validarContrasenia(String contrasenia) {
         validarNoVacio(contrasenia, "La contraseña no puede estar vacía.");
+
         if (contrasenia.length() < 8) {
             throw new UsuarioInvalidoException("La contraseña debe tener al menos 8 caracteres.");
         }
 
-        if (!contrasenia.matches(".*[A-Za-z].*") || !contrasenia.matches(".*\\d.*")) {
+        boolean tieneLetra = false;
+        boolean tieneDigito = false;
+
+        for (int i = 0; i < contrasenia.length(); i++) {
+            char c = contrasenia.charAt(i);
+            
+            if (Character.isLetter(c)) {
+                tieneLetra = true;
+            }
+            if (Character.isDigit(c)) {
+                tieneDigito = true;
+            }
+            
+            if (tieneLetra && tieneDigito) {
+                break;
+            }
+        }
+
+        if (!tieneLetra || !tieneDigito) {
             throw new UsuarioInvalidoException("La contraseña debe contener al menos una letra y un número.");
         }
     }

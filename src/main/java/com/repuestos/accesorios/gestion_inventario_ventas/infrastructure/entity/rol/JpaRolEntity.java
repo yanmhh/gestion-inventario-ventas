@@ -1,7 +1,13 @@
 package com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.entity.rol;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "rol")
 public class JpaRolEntity {
@@ -14,22 +20,4 @@ public class JpaRolEntity {
     @Column(name = "nombre")
     private String nombre;
 
-    public JpaRolEntity(){
-    }
-
-    public Integer getId(){
-        return this.id;
-    }
-
-    public String getNombre(){
-        return this.nombre;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 }

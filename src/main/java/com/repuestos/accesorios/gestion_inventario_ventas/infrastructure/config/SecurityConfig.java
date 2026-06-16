@@ -46,6 +46,11 @@ public class SecurityConfig {
         this.accessDeniedHandler = accessDeniedHandler;
     }
 
+    // CSRF está deshabilitado porque:
+    // 1. Usamos autenticación JWT stateless (no cookies de sesión)
+    // 2. Los tokens JWT se envían en headers Authorization, no en cookies
+    // 3. Los ataques CSRF requieren que el navegador envíe automáticamente credenciales
+    // 4. Headers personalizados no pueden ser forzados por sitios maliciosos (política CORS)
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

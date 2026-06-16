@@ -67,3 +67,13 @@ tasks.named('bootRun') {
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
 }
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "gestion-inventario-ventas-1"
+        property "sonar.projectName", "gestion-inventario-ventas-1"
+        property "sonar.projectVersion", "1.0"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.token", "sqp_fef2a351dfcbfacc15f32ff7223b75c8ab41ca67"
+    }
+}
