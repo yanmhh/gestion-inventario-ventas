@@ -117,9 +117,6 @@ public class Producto {
         if (stockMinimo < 0){
             throw new StockInvalidoException("El stock no puede ser negativo.");
         }
-        if (stockMinimo > stock) {
-            throw new StockInvalidoException("El stock mínimo no puede ser mayor al stock inicial.");
-        }
     }
 
 

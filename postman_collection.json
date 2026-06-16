@@ -1,0 +1,979 @@
+{
+  "info": {
+    "name": "Sistema Gestión Inventario y Ventas API",
+    "description": "Colección completa de endpoints para el Sistema de Gestión de Inventario y Ventas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Autenticación",
+      "item": [
+        {
+          "name": "Registrar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": {\n    \"nombre\": \"Juan\",\n    \"apellido_paterno\": \"Pérez\",\n    \"apellido_materno\": \"García\",\n    \"correo\": \"juan.perez@email.com\",\n    \"telefono\": \"987654321\"\n  },\n  \"contrasenia\": \"Password123!\",\n  \"rolId\": 2,\n  \"estado\": \"ACTIVO\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"access_token\", jsonData.accessToken);",
+                  "    pm.environment.set(\"refresh_token\", jsonData.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"juan.perez@email.com\",\n  \"contrasenia\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{refresh_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "refresh"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Productos",
+      "item": [
+        {
+          "name": "Crear Producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Llanta Michelin 205/55 R16\",\n  \"descripcion\": \"Llanta de alto rendimiento para sedán\",\n  \"precio_venta\": 450.00,\n  \"costo_compra\": 320.00,\n  \"stock\": 50,\n  \"stock_minimo\": 10,\n  \"codigo\": \"LLT-MICH-205-55-R16\",\n  \"imagen_url\": \"https://ejemplo.com/imagen.jpg\",\n  \"marca_id\": 1,\n  \"categoria_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/productos",
+              "host": ["{{base_url}}"],
+              "path": ["productos"]
+            }
+          }
+        },
+        {
+          "name": "Listar Productos (Paginado)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/productos?page=0&size=10&sort=nombre,asc",
+              "host": ["{{base_url}}"],
+              "path": ["productos"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "nombre,asc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Producto por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/productos/1",
+              "host": ["{{base_url}}"],
+              "path": ["productos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Filtrar Productos",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Llanta\",\n  \"categoriaId\": 1,\n  \"marcaId\": 1,\n  \"precioMin\": 100.00,\n  \"precioMax\": 500.00,\n  \"stockMin\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/productos/filtrar?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["productos", "filtrar"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Llanta Michelin 205/55 R16 - Actualizado\",\n  \"descripcion\": \"Llanta actualizada\",\n  \"precio_venta\": 480.00,\n  \"costo_compra\": 340.00,\n  \"stock\": 45,\n  \"stock_minimo\": 10,\n  \"codigo\": \"LLT-MICH-205-55-R16\",\n  \"imagen_url\": \"https://ejemplo.com/nueva-imagen.jpg\",\n  \"marca_id\": 1,\n  \"categoria_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/productos/1",
+              "host": ["{{base_url}}"],
+              "path": ["productos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Producto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/productos/1",
+              "host": ["{{base_url}}"],
+              "path": ["productos", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Ventas",
+      "item": [
+        {
+          "name": "Registrar Venta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cliente_id\": 1,\n  \"fecha\": \"2025-01-13T10:30:00\",\n  \"estado\": \"COMPLETADA\",\n  \"tipo_documento\": \"BOLETA\",\n  \"total\": 1350.00,\n  \"observaciones\": \"Venta al contado\",\n  \"detalles\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 3,\n      \"precioUnitario\": 450.00\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ventas/command",
+              "host": ["{{base_url}}"],
+              "path": ["ventas", "command"]
+            }
+          }
+        },
+        {
+          "name": "Listar Ventas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ventas/query",
+              "host": ["{{base_url}}"],
+              "path": ["ventas", "query"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Venta por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ventas/query/1",
+              "host": ["{{base_url}}"],
+              "path": ["ventas", "query", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Clientes",
+      "item": [
+        {
+          "name": "Crear Cliente Natural",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": {\n    \"nombre\": \"María\",\n    \"apellido_paterno\": \"López\",\n    \"apellido_materno\": \"Ramírez\",\n    \"correo\": \"maria.lopez@email.com\",\n    \"telefono\": \"998877665\"\n  },\n  \"tipo_cliente\": \"NATURAL\",\n  \"razon_social\": null,\n  \"documento_identidad\": \"12345678\",\n  \"ruc_empresa\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/command",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "command"]
+            }
+          }
+        },
+        {
+          "name": "Crear Cliente Jurídico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": {\n    \"nombre\": \"Carlos\",\n    \"apellido_paterno\": \"Méndez\",\n    \"apellido_materno\": \"Torres\",\n    \"correo\": \"contacto@empresa.com\",\n    \"telefono\": \"987654321\"\n  },\n  \"tipo_cliente\": \"JURIDICO\",\n  \"razon_social\": \"Empresa SAC\",\n  \"documento_identidad\": \"20123456789\",\n  \"ruc_empresa\": \"20123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/command",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "command"]
+            }
+          }
+        },
+        {
+          "name": "Listar Clientes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clientes/query",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "query"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clientes/query/1",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "query", "1"]
+            }
+          }
+        },
+        {
+          "name": "Buscar por Documento",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clientes/query/documento?documentoIdentidad=12345678",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "query", "documento"],
+              "query": [
+                {
+                  "key": "documentoIdentidad",
+                  "value": "12345678"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por RUC",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clientes/query/ruc?rucEmpresa=20123456789",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "query", "ruc"],
+              "query": [
+                {
+                  "key": "rucEmpresa",
+                  "value": "20123456789"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por Tipo",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clientes/query/tipo?tipoCliente=NATURAL",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "query", "tipo"],
+              "query": [
+                {
+                  "key": "tipoCliente",
+                  "value": "NATURAL"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": {\n    \"nombre\": \"María\",\n    \"apellido_paterno\": \"López\",\n    \"apellido_materno\": \"Ramírez\",\n    \"correo\": \"maria.lopez.actualizado@email.com\",\n    \"telefono\": \"999888777\"\n  },\n  \"tipo_cliente\": \"NATURAL\",\n  \"razon_social\": null,\n  \"documento_identidad\": \"12345678\",\n  \"ruc_empresa\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clientes/command/1",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "command", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clientes/command/1",
+              "host": ["{{base_url}}"],
+              "path": ["clientes", "command", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Categorías",
+      "item": [
+        {
+          "name": "Crear Categoría",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Llantas\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/categorias/command",
+              "host": ["{{base_url}}"],
+              "path": ["categorias", "command"]
+            }
+          }
+        },
+        {
+          "name": "Listar Categorías",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/categorias/query",
+              "host": ["{{base_url}}"],
+              "path": ["categorias", "query"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Categoría por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/categorias/query/1",
+              "host": ["{{base_url}}"],
+              "path": ["categorias", "query", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Categoría",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Llantas y Neumáticos\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/categorias/command/1",
+              "host": ["{{base_url}}"],
+              "path": ["categorias", "command", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Categoría",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/categorias/command/1",
+              "host": ["{{base_url}}"],
+              "path": ["categorias", "command", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔖 Marcas",
+      "item": [
+        {
+          "name": "Crear Marca",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Michelin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/marcas/command",
+              "host": ["{{base_url}}"],
+              "path": ["marcas", "command"]
+            }
+          }
+        },
+        {
+          "name": "Listar Marcas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/marcas/query",
+              "host": ["{{base_url}}"],
+              "path": ["marcas", "query"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Marca por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/marcas/query/1",
+              "host": ["{{base_url}}"],
+              "path": ["marcas", "query", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Marca",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Michelin Pro\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/marcas/command/1",
+              "host": ["{{base_url}}"],
+              "path": ["marcas", "command", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Marca",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/marcas/command/1",
+              "host": ["{{base_url}}"],
+              "path": ["marcas", "command", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 Movimientos de Stock",
+      "item": [
+        {
+          "name": "Registrar Movimiento Entrada",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"producto_id\": 1,\n  \"tipo_movimiento\": \"ENTRADA\",\n  \"cantidad\": 20,\n  \"fecha\": \"2025-01-13T14:00:00\",\n  \"referencia\": \"Compra a proveedor XYZ\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/movimientos-stock/command",
+              "host": ["{{base_url}}"],
+              "path": ["movimientos-stock", "command"]
+            }
+          }
+        },
+        {
+          "name": "Registrar Movimiento Salida",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"producto_id\": 1,\n  \"tipo_movimiento\": \"SALIDA\",\n  \"cantidad\": 5,\n  \"fecha\": \"2025-01-13T15:00:00\",\n  \"referencia\": \"Ajuste por producto dañado\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/movimientos-stock/command",
+              "host": ["{{base_url}}"],
+              "path": ["movimientos-stock", "command"]
+            }
+          }
+        },
+        {
+          "name": "Listar Movimientos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/movimientos-stock/query",
+              "host": ["{{base_url}}"],
+              "path": ["movimientos-stock", "query"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Movimiento por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/movimientos-stock/query/1",
+              "host": ["{{base_url}}"],
+              "path": ["movimientos-stock", "query", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Personas",
+      "item": [
+        {
+          "name": "Registrar Persona",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos\",\n  \"apellido_paterno\": \"Gonzales\",\n  \"apellido_materno\": \"Morales\",\n  \"correo\": \"carlos.gonzales@email.com\",\n  \"telefono\": \"987654321\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/personas",
+              "host": ["{{base_url}}"],
+              "path": ["personas"]
+            }
+          }
+        },
+        {
+          "name": "Listar Personas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/personas",
+              "host": ["{{base_url}}"],
+              "path": ["personas"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Persona por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/personas/1",
+              "host": ["{{base_url}}"],
+              "path": ["personas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Persona",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos Actualizado\",\n  \"apellido_paterno\": \"Gonzales\",\n  \"apellido_materno\": \"Morales\",\n  \"correo\": \"carlos.actualizado@email.com\",\n  \"telefono\": \"988777666\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/personas/1",
+              "host": ["{{base_url}}"],
+              "path": ["personas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Persona",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/personas/1",
+              "host": ["{{base_url}}"],
+              "path": ["personas", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔧 Actuator (Monitoreo)",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Application Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/info",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "info"]
+            }
+          }
+        },
+        {
+          "name": "Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/metrics",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "metrics"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

@@ -8,7 +8,6 @@ import com.repuestos.accesorios.gestion_inventario_ventas.domain.model.usuario.U
 import com.repuestos.accesorios.gestion_inventario_ventas.domain.repository.usuario.UsuarioWriteRepository;
 import com.repuestos.accesorios.gestion_inventario_ventas.infrastructure.security.CustomUserDetails;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,11 +45,5 @@ public class VentaCommandController {
                 .toUri();
 
         return ResponseEntity.created(location).body(ventaCreada);
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarVenta(@PathVariable @Positive Integer id) {
-        return ResponseEntity.noContent().build();
     }
 }
